@@ -4,7 +4,7 @@ Criar projeto em ReactJS :
 ### `npx create-react-app perfil`
 
 Iniciar projeto:
-### `cd perdil`
+### `cd perfil`
 ### `npm start`
 
 Estrutura da tela de perfil:
