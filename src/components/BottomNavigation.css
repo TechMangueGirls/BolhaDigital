@@ -1,0 +1,42 @@
+.bottom-navigation {
+    background-color: #f8f8f8;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 12px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  .bottom-navigation .nav-icon {
+    font-size: 24px;
+    color: #555;
+    cursor: pointer;
+  }
+  
+  .bottom-navigation .nav-icon.home {
+    color: #3498db; /* Cor destaque para o ícone home */
+  }
+  .bottom-navigation {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px 0;
+    border-top: 1px solid #ccc;
+  }
+  
+  .nav-icon {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .icon-image {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+  
