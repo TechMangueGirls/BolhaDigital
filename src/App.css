@@ -1,0 +1,12 @@
+.app-container {
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Garante que o contêiner ocupe a altura total da tela */
+  padding-bottom: 60px; /* Espaço para a barra de navegação inferior */
+}
+
+.feed {
+  padding: 16px;
+  flex-grow: 1; /* Permite que o feed cresça e preencha o espaço disponível */
+}
