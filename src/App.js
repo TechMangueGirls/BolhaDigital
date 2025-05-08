@@ -1,37 +1,34 @@
-import React from 'react';
-import ProfileHeader from './components/ProfileHeader';
-import FeedItem from './components/FeedItem';
-import BottomNavigation from './components/BottomNavigation';
-import FloatingActionButton from './components/FloatingActionButton';
-import './App.css'; // Importe o arquivo de estilos global
+import { Container, Row, Col } from "react-bootstrap";
+import { Routes, Route } from "react-router-dom";
+import "./App.css";
+import Home from "./components/Home";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { UserAuthContextProvider } from "./context/UserAuthContext";
 
 function App() {
-  const feedData = [
-    {
-      author: 'André',
-      handle: 'andrezin',
-      content: 'Hoje, quero compartilhar uma música que sempre me faz sentir bem: "Happy" do Pharrell Williams!',
-      likes: 10,
-    },
-    {
-      author: 'André',
-      handle: 'andrezin',
-      content: 'Uma ótima maneira de relaxar, explorar a natureza e manter a forma.',
-      image: '/images/bicycle.jpg',
-    },
-  ];
-
   return (
-    <div className="app-container">
-      <ProfileHeader />
-      <div className="feed">
-        {feedData.map((post, index) => (
-          <FeedItem key={index} post={post} />
-        ))}
-      </div>
-      <BottomNavigation />
-      <FloatingActionButton />
-    </div>
+    <Container style={{ width: "400px" }}>
+      <Row>
+        <Col>
+          <UserAuthContextProvider>
+            <Routes>
+              <Route
+                path="/home"
+                element={
+                  <ProtectedRoute>
+                    <Home />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+            </Routes>
+          </UserAuthContextProvider>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
