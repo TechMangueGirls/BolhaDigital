@@ -1,11 +1,5 @@
-# Navegar no projeto em ReactJS
+# ReactJS
 
-Criar projeto em ReactJS :
-### `npx create-react-app perfil`
-
-Iniciar projeto:
-### `cd perfil`
-### `npm start`
 
 Estrutura (tela de perfil):
 
