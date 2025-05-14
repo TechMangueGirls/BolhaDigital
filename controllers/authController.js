@@ -2,6 +2,7 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+// Registrar novo usuário
 exports.register = async (req, res) => {
   const { name, username, email, dob, password, confirmpassword } = req.body;
 
@@ -43,6 +44,7 @@ exports.register = async (req, res) => {
   }
 };
 
+// Login de usuário
 exports.login = async (req, res) => {
   const { identifier, password } = req.body;
 
@@ -50,7 +52,10 @@ exports.login = async (req, res) => {
     return res.status(422).json({ msg: 'Email/Username e senha são obrigatórios!' });
   }
 
-  const user = await User.findOne({ $or: [{ email: identifier }, { username: identifier }] });
+  const user = await User.findOne({
+    $or: [{ email: identifier }, { username: identifier }]
+  });
+
   if (!user) {
     return res.status(404).json({ msg: 'Usuário não encontrado!' });
   }
@@ -63,12 +68,24 @@ exports.login = async (req, res) => {
   try {
     const secret = process.env.SECRET;
     const token = jwt.sign({ id: user._id }, secret);
-    res.status(200).json({ msg: 'Autenticação realizada com sucesso!', token });
+
+    res.status(200).json({
+      msg: 'Autenticação realizada com sucesso!',
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        dob: user.dob
+      }
+    });
   } catch (err) {
     res.status(500).json({ msg: 'Erro ao gerar o token!' });
   }
 };
 
+// Buscar dados do usuário autenticado
 exports.getUser = async (req, res) => {
   try {
     const user = await User.findById(req.userId, '-password');
@@ -80,3 +97,4 @@ exports.getUser = async (req, res) => {
     res.status(500).json({ msg: 'Erro ao buscar usuário' });
   }
 };
+

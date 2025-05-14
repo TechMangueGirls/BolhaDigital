@@ -4,7 +4,9 @@ const authController = require('../controllers/authController');
 const checkToken = require('../middlewares/checkToken');
 
 // Rota principal
-router.get('/', (req, res) => res.status(200).json({ msg: 'Bem-vindo à nossa API' }));
+router.get('/', (req, res) => {
+  res.status(200).json({ msg: 'Bem-vindo à nossa API' });
+});
 
 // Rota para buscar o usuário pelo ID
 router.get('/user/:id', checkToken, authController.getUser);
@@ -16,3 +18,4 @@ router.post('/auth/register', authController.register);
 router.post('/auth/login', authController.login);
 
 module.exports = router;
+
