@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../../api";
 
 const Home = () => {
   const [userName, setUserName] = useState("");
@@ -13,7 +14,7 @@ const Home = () => {
     } else {
       const loadUserData = async () => {
         try {
-          const res = await fetch("http://localhost:5000/user/me", {
+          const res = await fetch(`${API_BASE_URL}/user/me`, {
             method: "GET",
             headers: {
               Authorization: `Bearer ${token}`,

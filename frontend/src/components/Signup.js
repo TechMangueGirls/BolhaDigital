@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Alert, Button } from "react-bootstrap";
 import favicon from "../assets/favicon.png";
+import API_BASE_URL from "../api";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -23,10 +24,10 @@ const Signup = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/auth/register", {
+      const res = await fetch(`${API_BASE_URL}/auth/register`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name,
@@ -34,8 +35,8 @@ const Signup = () => {
           email,
           dob,
           password,
-          confirmpassword: confirmPassword
-        })
+          confirmpassword: confirmPassword,
+        }),
       });
 
       const data = await res.json();
