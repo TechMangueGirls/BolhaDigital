@@ -12,7 +12,7 @@ export function UserAuthContextProvider({ children }) {
       if (!token) return;
 
       try {
-        const res = await fetch("http://localhost:5000/user", {
+        const res = await fetch("http://localhost:5000/user/me", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -21,7 +21,7 @@ export function UserAuthContextProvider({ children }) {
 
         const data = await res.json();
         if (res.ok && data.user) {
-          setUser(data.user);  
+          setUser(data.user);
         } else {
           console.error("Erro ao carregar usuário:", data.msg || data.error);
           logOut();
@@ -35,19 +35,38 @@ export function UserAuthContextProvider({ children }) {
     loadUser();
   }, []);
 
-  const signUp = (name, username, email, dob, password) => {
-    const newUser = { name, username, email, dob, password };
-    localStorage.setItem("user", JSON.stringify(newUser));
-    setUser(newUser);
+  // ✅ Função signUp corrigida: envia dados para o backend
+  const signUp = async (name, username, email, dob, password) => {
+    try {
+      const res = await fetch("http://localhost:5000/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, username, email, dob, password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        // Supondo que o backend retorna { user, token }
+        logIn(data.user, data.token);
+      } else {
+        console.error("Erro no cadastro:", data.msg || data.error);
+        alert(data.msg || data.error);
+      }
+    } catch (error) {
+      console.error("Erro de conexão no cadastro:", error);
+      alert("Erro de conexão ao tentar cadastrar.");
+    }
   };
 
- const logIn = (userData, token) => {
-  localStorage.setItem("user", JSON.stringify(userData));
-  localStorage.setItem("token", token);
-  localStorage.setItem("userId", userData._id);
-  setUser(userData);
-};
-
+  const logIn = (userData, token) => {
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("token", token);
+    localStorage.setItem("userId", userData._id);
+    setUser(userData);
+  };
 
   const logOut = () => {
     localStorage.removeItem("user");

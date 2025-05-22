@@ -1,37 +1,45 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import BottomNavigation from './BottomNavigation';
 
 const Missoes = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="missoes-container">
+    <div className="missoes-container" style={{ paddingBottom: "70px" }}>
       <h1>Missões</h1>
-      <p>Explore suas missões abaixo e cumpra desafios!</p>
+      <p>Explore suas missões abaixo e cumpra desafios para espalhar positividade!</p>
 
-      <div className="container">
-        <div className="card-button posts" onClick={() => navigate("/postagem")}>
+      <div className="missoes-grid">
+        <div className="card-button" onClick={() => navigate("/post")}>
           <strong>Postagens</strong>
-          <span>Veja as postagens mais recentes.</span>
+          <span>Veja e compartilhe as postagens mais recentes.</span>
         </div>
 
-        <div className="card-button recompensas" onClick={() => navigate("/recompensas")}>
+        <div className="card-button" onClick={() => navigate("/recompensas")}>
           <strong>Recompensas</strong>
-          <span>Confira as recompensas que você pode ganhar.</span>
+          <span>Acumule Bubbles e troque por recompensas.</span>
         </div>
 
-        <div className="card-button perfil" onClick={() => navigate("/perfil")}>
+        <div className="card-button" onClick={() => navigate("/perfil")}>
           <strong>Perfil</strong>
-          <span>Veja e edite seu perfil.</span>
+          <span>Veja e personalize seu perfil.</span>
         </div>
 
-        <div className="card-button votacao" onClick={() => navigate("/votacao")}>
+        <div className="card-button" onClick={() => navigate("/likes")}>
           <strong>Votação</strong>
-          <span>Participe da votação das missões.</span>
+          <span>Vote e contribua com uma bolha mais positiva.</span>
         </div>
       </div>
+
+      {/* Rodapé fixo */}
+      <footer className="missoes-footer">
+        <BottomNavigation />
+      </footer>
     </div>
   );
 };
 
 export default Missoes;
+
+
