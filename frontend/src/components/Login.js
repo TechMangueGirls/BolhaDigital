@@ -18,7 +18,7 @@ const Login = () => {
     setSuccess("");
 
     try {
-      const res = await fetch("http://localhost:5000/auth/login", {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,7 +32,6 @@ const Login = () => {
       const data = await res.json();
 
       if (res.ok && data.user) {
-      
         localStorage.setItem("token", data.token);
         logIn(data.user, data.token); 
         setSuccess("Autenticação realizada com sucesso!");
@@ -84,6 +83,7 @@ const Login = () => {
 };
 
 export default Login;
+
 
 
 
