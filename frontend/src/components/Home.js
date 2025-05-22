@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../assets/style/home.css"; 
-import BottomNavigation from './BottomNavigation';
+import "../assets/style/home.css";
+import BottomNavigation from "./BottomNavigation";
 
 const Home = () => {
   const [userName, setUserName] = useState("");
@@ -13,32 +13,33 @@ const Home = () => {
 
     if (!token || !userId) {
       navigate("/");
-    } else {
-      const loadUserData = async () => {
-        try {
-          const res = await fetch(`http://localhost:5000/user/${userId}`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+      return;
+    }
 
-          const data = await res.json();
+    const loadUserData = async () => {
+      try {
+        const res = await fetch(`http://localhost:5000/user/${userId}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-          if (res.ok && data.user) {
-            setUserName(data.user.username);
-          } else {
-            console.error("Erro ao carregar dados do usuário:", data.msg);
-            navigate("/");
-          }
-        } catch (error) {
-          console.error("Erro ao conectar ao servidor:", error);
+        const data = await res.json();
+
+        if (res.ok && data.user) {
+          setUserName(data.user.username);
+        } else {
+          console.error("Erro ao carregar dados do usuário:", data.msg);
           navigate("/");
         }
-      };
+      } catch (error) {
+        console.error("Erro ao conectar ao servidor:", error);
+        navigate("/");
+      }
+    };
 
-      loadUserData();
-    }
+    loadUserData();
   }, [navigate]);
 
   const handleLogout = () => {
@@ -50,19 +51,20 @@ const Home = () => {
   return (
     <div className="home-container">
       <header className="home-header">
-        <h2 className="welcome-text"> Bem-vindo(a), {userName}! </h2>
+        <h2 className="welcome-text">Bem-vindo(a), {userName}!</h2>
         <button className="logout-button" onClick={handleLogout}>
           Sair
         </button>
       </header>
 
-      <p className="home-description"> Esta é a sua página inicial. </p>
+      <p className="home-description">Esta é a sua página inicial.</p>
 
       <footer className="home-footer">
-     <BottomNavigation />
+        <BottomNavigation />
       </footer>
     </div>
   );
 };
 
 export default Home;
+

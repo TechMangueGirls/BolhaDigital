@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Alert, Button } from "react-bootstrap";
 import favicon from "../assets/favicon.png";
-import { useUserAuth } from "../context/UserAuthContext"; 
+import { useUserAuth } from "../context/UserAuthContext";
 
 const Login = () => {
-  const [login, setLogin] = useState(""); 
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(""); 
+  const [success, setSuccess] = useState("");
   const navigate = useNavigate();
-  const { logIn } = useUserAuth(); 
+  const { logIn } = useUserAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,9 +33,10 @@ const Login = () => {
 
       if (res.ok && data.user) {
         localStorage.setItem("token", data.token);
-        logIn(data.user, data.token); 
+        localStorage.setItem("userId", data.user._id);  // <-- salva o userId aqui
+        logIn(data.user, data.token);
         setSuccess("Autenticação realizada com sucesso!");
-        setTimeout(() => navigate("/home"), 1000); 
+        setTimeout(() => navigate("/home"), 1000);
       } else {
         setError(data.msg || "Credenciais inválidas.");
       }
@@ -83,6 +84,7 @@ const Login = () => {
 };
 
 export default Login;
+
 
 
 
