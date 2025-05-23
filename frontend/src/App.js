@@ -7,7 +7,9 @@ import Signup from "./components/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import Missoes from "./components/Missoes";
-import Votacao from "./components/Votacao";
+import Post from "./components/Post";
+import Likes from "./components/Likes";
+import Perfil from "./components/Perfil";
 
 function App() {
   return (
@@ -32,11 +34,28 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+           
               <Route
-                path="/votacao"
+                path="/post"
                 element={
                   <ProtectedRoute>
-                    <Votacao />
+                    <Post />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/likes"
+                element={
+                  <ProtectedRoute>
+                    <Likes />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/perfil"
+                element={
+                  <ProtectedRoute>
+                    <Perfil />
                   </ProtectedRoute>
                 }
               />

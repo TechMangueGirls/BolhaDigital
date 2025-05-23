@@ -1,8 +1,9 @@
 import React from "react";
+import BottomNavigation from "./BottomNavigation"; // Importação do footer
 
 const Votacao = () => {
   return (
-    <div className="votacao-container">
+    <div className="votacao-container" style={{ paddingBottom: "70px" }}>
       <h1>Votação</h1>
       <p>Participe da votação abaixo!</p>
 
@@ -23,6 +24,11 @@ const Votacao = () => {
           </div>
         </div>
       </div>
+
+      {/* Rodapé fixo */}
+      <footer className="page-footer">
+        <BottomNavigation />
+      </footer>
     </div>
   );
 };
