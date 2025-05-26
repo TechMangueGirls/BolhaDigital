@@ -3,6 +3,9 @@ const jwt = require('jsonwebtoken');
 function checkToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(" ")[1];
+
+  // console.log("Token recebido no backend:", token); 
+
   if (!token) {
     return res.status(401).json({ msg: "Acesso negado!" });
   }
@@ -18,3 +21,4 @@ function checkToken(req, res, next) {
 }
 
 module.exports = checkToken;
+
