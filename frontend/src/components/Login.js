@@ -32,8 +32,6 @@ const Login = () => {
       const data = await res.json();
 
       if (res.ok && data.user) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("userId", data.user._id);  // <-- salva o userId aqui
         logIn(data.user, data.token);
         setSuccess("Autenticação realizada com sucesso!");
         setTimeout(() => navigate("/home"), 1000);
@@ -41,7 +39,6 @@ const Login = () => {
         setError(data.msg || "Credenciais inválidas.");
       }
     } catch (err) {
-      console.error("Erro ao conectar com o servidor:", err);
       setError("Erro ao conectar com o servidor.");
     }
   };
@@ -84,9 +81,6 @@ const Login = () => {
 };
 
 export default Login;
-
-
-
 
 
 

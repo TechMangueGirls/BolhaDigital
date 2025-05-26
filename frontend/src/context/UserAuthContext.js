@@ -4,12 +4,18 @@ const UserAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const loadUser = async () => {
+      setLoading(true);
       const token = localStorage.getItem("token");
 
-      if (!token) return;
+      if (!token) {
+        setLoading(false);
+        return;
+      }
 
       try {
         const res = await fetch("http://localhost:5000/user/me", {
@@ -20,22 +26,24 @@ export function UserAuthContextProvider({ children }) {
         });
 
         const data = await res.json();
+
         if (res.ok && data.user) {
           setUser(data.user);
         } else {
-          console.error("Erro ao carregar usuário:", data.msg || data.error);
           logOut();
+          setError(data.msg || data.error);
         }
       } catch (error) {
-        console.error("Erro ao conectar ao servidor:", error);
         logOut();
+        setError("Erro ao conectar com o servidor");
+      } finally {
+        setLoading(false);
       }
     };
 
     loadUser();
   }, []);
 
-  // ✅ Função signUp corrigida: envia dados para o backend
   const signUp = async (name, username, email, dob, password) => {
     try {
       const res = await fetch("http://localhost:5000/auth/register", {
@@ -49,15 +57,13 @@ export function UserAuthContextProvider({ children }) {
       const data = await res.json();
 
       if (res.ok) {
-        // Supondo que o backend retorna { user, token }
         logIn(data.user, data.token);
       } else {
-        console.error("Erro no cadastro:", data.msg || data.error);
         alert(data.msg || data.error);
+        throw new Error(data.msg || data.error);
       }
     } catch (error) {
-      console.error("Erro de conexão no cadastro:", error);
-      alert("Erro de conexão ao tentar cadastrar.");
+      alert("Erro ao cadastrar: " + error.message);
     }
   };
 
@@ -81,7 +87,7 @@ export function UserAuthContextProvider({ children }) {
 
   return (
     <UserAuthContext.Provider
-      value={{ user, signUp, logIn, logOut, resetPassword }}
+      value={{ user, loading, error, signUp, logIn, logOut, resetPassword }}
     >
       {children}
     </UserAuthContext.Provider>
