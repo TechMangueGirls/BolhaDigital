@@ -1,58 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useUserAuth } from "../context/UserAuthContext";
 import BottomNavigation from "./BottomNavigation";
 
 const Perfil = () => {
-  const [nome, setNome] = useState("");       // Para o nome real (ex: André)
-  const [username, setUsername] = useState(""); // Para o username (ex: andrezin)
+  const { user, logOut } = useUserAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
+  if (!user) {
+    return <div>Carregando...</div>;
+  }
 
-    if (!token || !userId) {
-      navigate("/");
-    } else {
-      const loadUserData = async () => {
-        try {
-          const res = await fetch(`http://localhost:5000/user/${userId}`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          const data = await res.json();
-
-          if (res.ok && data.user) {
-            setNome(data.user.name || "");          // ajuste para o campo do nome real no seu backend
-            setUsername(data.user.username || "");
-          } else {
-            console.error("Erro ao carregar dados do usuário:", data.msg);
-            navigate("/");
-          }
-        } catch (error) {
-          console.error("Erro ao conectar ao servidor:", error);
-          navigate("/");
-        }
-      };
-
-      loadUserData();
-    }
-  }, [navigate]);
+  const handleLogout = () => {
+    logOut();
+    navigate("/");
+  };
 
   return (
     <div className="perfil-container" style={{ paddingBottom: "70px" }}>
-      <h1>Perfil</h1>
+      <header className="perfil-header">
+        <h1>Perfil</h1>
+        <button className="logout-button" onClick={handleLogout}>
+          Sair
+        </button>
+      </header>
+
       <p>Veja e personalize suas informações abaixo:</p>
 
       <div className="perfil-card">
         <div className="perfil-item">
-          <strong>Nome:</strong> {nome}
+          <strong>Nome:</strong> {user.name}
         </div>
         <div className="perfil-item">
-          <strong>Usuário:</strong> @{username}
+          <strong>Usuário:</strong> @{user.username}
         </div>
 
         <div className="perfil-stats">
@@ -76,5 +56,3 @@ const Perfil = () => {
 };
 
 export default Perfil;
-
-
