@@ -52,69 +52,90 @@ const Signup = () => {
   };
 
   return (
-    <div className="p-4 box">
-      <h2 className="mb-3">
-        <img src={favicon} alt="Bolha Digital" className="icone" />
-      </h2>
-      {error && <Alert variant="danger">{error}</Alert>}
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="text"
-            placeholder="Nome Completo"
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="text"
-            placeholder="Nome de Usuário"
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="email"
-            placeholder="Email"
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="date"
-            onChange={(e) => setDob(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="password"
-            placeholder="Senha"
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="password"
-            placeholder="Confirmar Senha"
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <div className="d-grid gap-2">
-          <Button className="custom-btn" type="submit">
-            Cadastrar
-          </Button>
+    <>
+      <div className="p-4 box">
+        <h2 className="mb-3">
+          <img src={favicon} alt="Bolha Digital" className="icone" />
+        </h2>
+        {error && <Alert variant="danger">{error}</Alert>}
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Control
+              type="text"
+              placeholder="Nome Completo"
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Control
+              type="text"
+              placeholder="Nome de Usuário"
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Control
+              type="email"
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Control
+              type="date"
+              onChange={(e) => setDob(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Control
+              type="password"
+              placeholder="Senha"
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Control
+              type="password"
+              placeholder="Confirmar Senha"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <div className="d-grid gap-2">
+            <Button className="custom-btn" type="submit">
+              Cadastrar
+            </Button>
+          </div>
+        </Form>
+        <div className="text-center mt-3">
+          Já tem uma conta? <Link to="/">Faça login</Link>
         </div>
-      </Form>
-      <div className="text-center mt-3">
-        Já tem uma conta? <Link to="/">Faça login</Link>
       </div>
-    </div>
+
+      {/* Rodapé com texto branco e link de autoria */}
+      <footer
+        className="text-center mt-5 mb-3"
+        style={{ color: "white", fontSize: "0.9rem" }}
+      >
+        © {new Date().getFullYear()} Bolha Digital. Todos os direitos reservados.
+        <p>
+          Criado por{" "}
+          <a
+            href="https://github.com/luanabernardo/Bolha-Digital"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "white", textDecoration: "underline" }}
+          >
+            TechMangueGirls
+          </a>
+        </p>
+      </footer>
+    </>
   );
 };
 

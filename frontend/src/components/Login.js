@@ -44,43 +44,65 @@ const Login = () => {
   };
 
   return (
-    <div className="p-4 box">
-      <h2 className="mb-3">
-        <img src={favicon} alt="Bolha Digital" className="icone" />
-      </h2>
-      {error && <Alert variant="danger">{error}</Alert>}
-      {success && <Alert variant="success">{success}</Alert>}
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="text"
-            placeholder="Nome do usuário ou email"
-            onChange={(e) => setLogin(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="password"
-            placeholder="Digite sua senha"
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <div className="d-grid gap-2">
-          <Button className="custom-btn" type="submit">
-            Entrar
-          </Button>
+    <>
+      <div className="p-4 box">
+        <h2 className="mb-3">
+          <img src={favicon} alt="Bolha Digital" className="icone" />
+        </h2>
+        {error && <Alert variant="danger">{error}</Alert>}
+        {success && <Alert variant="success">{success}</Alert>}
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Control
+              type="text"
+              placeholder="Nome do usuário ou email"
+              onChange={(e) => setLogin(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Control
+              type="password"
+              placeholder="Digite sua senha"
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <div className="d-grid gap-2">
+            <Button className="custom-btn" type="submit">
+              Entrar
+            </Button>
+          </div>
+        </Form>
+        <div className="text-center mt-3">
+          Não possui uma conta? <Link to="/signup">Cadastre-se</Link>
         </div>
-      </Form>
-      <div className="text-center mt-3">
-        Não possui uma conta? <Link to="/signup">Cadastre-se</Link>
       </div>
-    </div>
+
+      <footer
+        className="text-center mt-5 mb-3"
+        style={{ color: "white", fontSize: "0.9rem" }}
+      >
+        © {new Date().getFullYear()} Bolha Digital. Todos os direitos reservados.
+        <p>
+          Criado por{" "}
+          <a
+            href="https://github.com/luanabernardo/Bolha-Digital"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "white", textDecoration: "underline" }}
+          >
+            TechMangueGirls
+          </a>
+        </p>
+      </footer>
+    </>
   );
 };
 
 export default Login;
+
+
 
 
 
