@@ -10,6 +10,7 @@ import Missoes from "./components/Missoes";
 import Post from "./components/Post";
 import Likes from "./components/Likes";
 import Perfil from "./components/Perfil";
+import Welcome from "./components/Welcome";
 
 function App() {
   return (
@@ -18,6 +19,16 @@ function App() {
         <Row>
           <Col>
             <Routes>
+              {/* Tela Welcome na raiz */}
+              <Route path="/" element={<Welcome />} />
+
+              {/* Tela Login na rota /login */}
+              <Route path="/login" element={<Login />} />
+
+              {/* Signup continua */}
+              <Route path="/signup" element={<Signup />} />
+
+              {/* Rotas protegidas */}
               <Route
                 path="/home"
                 element={
@@ -34,7 +45,6 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-           
               <Route
                 path="/post"
                 element={
@@ -59,8 +69,6 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route path="/" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
             </Routes>
           </Col>
         </Row>
@@ -70,5 +78,6 @@ function App() {
 }
 
 export default App;
+
 
 

@@ -1,5 +1,7 @@
 import React from "react";
-import BottomNavigation from "./BottomNavigation"; // importação do footer
+import BottomNavigation from "./BottomNavigation"; 
+import LogoutButton from "./LogoutBottom";
+import LogoFixa from "./LogoFixa";
 
 const Post = () => {
   return (
@@ -9,6 +11,8 @@ const Post = () => {
 
       {/* Rodapé fixo */}
       <footer className="page-footer">
+         <LogoutButton />
+          <LogoFixa/>
         <BottomNavigation />
       </footer>
     </div>

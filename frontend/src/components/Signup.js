@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Alert, Button } from "react-bootstrap";
 import favicon from "../assets/favicon.png";
@@ -13,6 +13,14 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const originalBg = document.body.style.backgroundColor;
+    document.body.style.backgroundColor = "#0579b2";
+    return () => {
+      document.body.style.backgroundColor = originalBg;
+    };
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,16 +61,29 @@ const Signup = () => {
 
   return (
     <>
-      <div className="p-4 box">
-        <h2 className="mb-3">
-          <img src={favicon} alt="Bolha Digital" className="icone" />
-        </h2>
+      <div
+        className="p-4 box"
+        style={{
+          maxWidth: "400px",
+          margin: "80px auto 0 auto",
+          backgroundColor: "white",
+          borderRadius: "12px",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+        }}
+      >
+        <div className="text-center mb-3">
+          <img
+            src={favicon}
+            alt="Bolha Digital"
+            style={{ width: "130px", display: "block", margin: "0 auto" }}
+          />
+        </div>
         {error && <Alert variant="danger">{error}</Alert>}
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
             <Form.Control
               type="text"
-              placeholder="Nome Completo"
+              placeholder="Nome e Sobrenome"
               onChange={(e) => setName(e.target.value)}
               required
             />
@@ -107,17 +128,24 @@ const Signup = () => {
             />
           </Form.Group>
           <div className="d-grid gap-2">
-            <Button className="custom-btn" type="submit">
+            <Button
+              className="custom-btn"
+              type="submit"
+              style={{
+                backgroundColor: "#0579b2",
+                border: "none",
+                fontWeight: "bold",
+              }}
+            >
               Cadastrar
             </Button>
           </div>
         </Form>
-        <div className="text-center mt-3">
+        <div className="text-center mt-3" style={{ color: "#0579b2" }}>
           Já tem uma conta? <Link to="/">Faça login</Link>
         </div>
       </div>
 
-      {/* Rodapé com texto branco e link de autoria */}
       <footer
         className="text-center mt-5 mb-3"
         style={{ color: "white", fontSize: "0.9rem" }}
