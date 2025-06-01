@@ -1,28 +1,21 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { useUserAuth } from "../context/UserAuthContext";
 import BottomNavigation from "./BottomNavigation";
+import LogoutButton from "./LogoutBottom"; 
+import LogoFixa from "./LogoFixa";
+
 
 const Perfil = () => {
-  const { user, logOut } = useUserAuth();
-  const navigate = useNavigate();
+  const { user } = useUserAuth();
 
   if (!user) {
     return <div>Carregando...</div>;
   }
 
-  const handleLogout = () => {
-    logOut();
-    navigate("/");
-  };
-
   return (
     <div className="perfil-container" style={{ paddingBottom: "70px" }}>
       <header className="perfil-header">
         <h1>Perfil</h1>
-        <button className="logout-button" onClick={handleLogout}>
-          Sair
-        </button>
       </header>
 
       <p>Veja e personalize suas informações abaixo:</p>
@@ -48,7 +41,12 @@ const Perfil = () => {
         </div>
       </div>
 
-      <footer className="perfil-footer">
+      <footer 
+        className="perfil-footer" 
+        style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", marginTop: "20px" }}
+      >
+        <LogoutButton />
+        <LogoFixa />
         <BottomNavigation />
       </footer>
     </div>
