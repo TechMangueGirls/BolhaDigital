@@ -8,7 +8,10 @@ router.get('/', (req, res) => {
   res.status(200).json({ msg: 'Bem-vindo à nossa API' });
 });
 
-// Rota para buscar o usuário pelo ID
+// Rota para obter os dados do usuário autenticado (usada no frontend)
+router.get('/user/me', checkToken, authController.getUser);
+
+// Rota para buscar qualquer usuário pelo ID (pode manter se for usar em outro lugar)
 router.get('/user/:id', checkToken, authController.getUser);
 
 // Rota de registro
@@ -18,4 +21,5 @@ router.post('/auth/register', authController.register);
 router.post('/auth/login', authController.login);
 
 module.exports = router;
+
 

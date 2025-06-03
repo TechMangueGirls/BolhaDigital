@@ -88,7 +88,7 @@ exports.login = async (req, res) => {
 // Buscar dados do usuário autenticado
 exports.getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.userId, '-password');
+    const user = await User.findById(req.userId).select('-password');
     if (!user) {
       return res.status(404).json({ msg: 'Usuário não encontrado!' });
     }
@@ -97,4 +97,5 @@ exports.getUser = async (req, res) => {
     res.status(500).json({ msg: 'Erro ao buscar usuário' });
   }
 };
+
 
