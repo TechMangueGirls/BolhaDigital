@@ -1,4 +1,4 @@
-import React, { useState } from "react";  
+import React, { useState, useEffect } from "react";  
 import { useNavigate } from "react-router-dom";
 import BottomNavigation from './BottomNavigation';
 import LogoutButton from "./LogoutBottom"; 
@@ -6,7 +6,6 @@ import { useUserAuth } from "../context/UserAuthContext";
 import LogoFixa from "./LogoFixa";
 
 import { 
-  FaBell, 
   FaCommentDots, 
   FaArrowRight, 
   FaRegNewspaper, 
@@ -19,18 +18,34 @@ const Home = () => {
   const { user } = useUserAuth();
   const navigate = useNavigate();
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 480);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const styles = {
-    welcomeText: {
-      fontSize: "1.5em", 
-      color: "#333",
-      margin: 0,
-      marginRight: "auto", 
-      display: "flex",
-      alignItems: "center", 
+    missoesContainer: {
+      paddingTop: isMobile ? "160px" : "120px",
+      backgroundColor: "white",
+      minHeight: "100vh",
     },
     logoContainer: {
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100%",
+      backgroundColor: "white",
+      zIndex: 1001,
+      padding: "10px 0",
       textAlign: "center",
-      marginBottom: "20px",
     },
     logo: {
       width: "120px",
@@ -40,12 +55,15 @@ const Home = () => {
       display: "flex",
       alignItems: "center",
       marginBottom: "30px",
+      padding: "0 10px",
     },
-    headerTitle: {
-      fontSize: "2em",
+    welcomeText: {
+      fontSize: "1.5em", 
       color: "#333",
       margin: 0,
-      marginRight: "auto",
+      marginRight: "auto", 
+      display: "flex",
+      alignItems: "center", 
     },
     notificationIconWrapper: {
       position: "relative",
@@ -172,16 +190,6 @@ const Home = () => {
       paddingBottom: "env(safe-area-inset-bottom)",
       zIndex: 1000,
     },
-    icone: {
-      width: "120px",
-      height: "auto",
-    },
-    p4Box: {
-      padding: '1rem',
-    },
-    mb3: {
-      marginBottom: '1rem',
-    },
   };
 
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -217,17 +225,11 @@ const Home = () => {
   return (
     <div style={styles.missoesContainer}>
       <div style={styles.logoContainer}>
-      </div>
-
-      <div style={styles.header}>
-        <h1 style={styles.welcomeText}>Bem-vindo(a), {user.name}!</h1>
-        <div style={styles.notificationIconWrapper}>
-          <FaBell />
-          <span style={styles.notificationDot}>1</span>
-        </div>
+        <LogoFixa />
       </div>
 
       <p style={{ ...styles.missionDescription, opacity: 1, padding: "0 10px", marginBottom: "20px" }}>
+         <h1 style={styles.welcomeText}>Bem-vindo(a), {user.name}!</h1>
         Compartilhe positividade na bolha!
       </p>
 
@@ -289,7 +291,7 @@ const Home = () => {
           <FaGift size={28} />
           <h3 style={styles.cardButtonTitle}>Recompensas</h3>
           <p style={styles.cardButtonDescription}>
-            Descubra suas recompensas e conquistas.
+            Resgate suas recompensas e conquistas.
           </p>
           <FaArrowRight style={styles.cardButtonArrow} />
         </div>
@@ -303,19 +305,23 @@ const Home = () => {
           <FaUserCircle size={28} />
           <h3 style={styles.cardButtonTitle}>Perfil</h3>
           <p style={styles.cardButtonDescription}>
-            Veja e edite suas informações.
+            Edite seu perfil e preferências.
           </p>
           <FaArrowRight style={styles.cardButtonArrow} />
         </div>
       </div>
 
       <div style={styles.missoesFooter}>
-        <LogoFixa/>
         <BottomNavigation />
-        <LogoutButton />
       </div>
+
+      <LogoutButton />
     </div>
   );
 };
 
 export default Home;
+
+
+
+

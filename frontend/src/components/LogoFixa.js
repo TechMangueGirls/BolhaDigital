@@ -6,15 +6,19 @@ function Logo() {
       src={logo}
       alt="Logo"
       style={{
-        position: "fixed",
-        top: "35px",
-        left: "35px",
-        height: "65px", 
+        position: "fixed",      
+        top: "1rem",            
+        left: "1rem",           
+        height: "50px",         
+        width: "auto",          
         objectFit: "contain",
-        zIndex: 1000,
+        zIndex: 1000,           
+        pointerEvents: "none",  
       }}
     />
   );
 }
 
 export default Logo;
+
+
