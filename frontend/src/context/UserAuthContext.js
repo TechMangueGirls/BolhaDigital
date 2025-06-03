@@ -4,15 +4,17 @@ const UserAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);  // <-- guardar token aqui
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const loadUser = async () => {
       setLoading(true);
-      const token = localStorage.getItem("token");
+      const localToken = localStorage.getItem("token");
+      const localUser = localStorage.getItem("user");
 
-      if (!token) {
+      if (!localToken || !localUser) {
         setLoading(false);
         return;
       }
@@ -21,7 +23,7 @@ export function UserAuthContextProvider({ children }) {
         const res = await fetch("http://localhost:5000/user/me", {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${localToken}`,
           },
         });
 
@@ -29,6 +31,7 @@ export function UserAuthContextProvider({ children }) {
 
         if (res.ok && data.user) {
           setUser(data.user);
+          setToken(localToken);  // <-- setar token no estado
         } else {
           logOut();
           setError(data.msg || data.error);
@@ -67,11 +70,12 @@ export function UserAuthContextProvider({ children }) {
     }
   };
 
-  const logIn = (userData, token) => {
+  const logIn = (userData, userToken) => {
     localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("token", token);
+    localStorage.setItem("token", userToken);
     localStorage.setItem("userId", userData._id);
     setUser(userData);
+    setToken(userToken);  // <-- setar token no estado
   };
 
   const logOut = () => {
@@ -79,6 +83,7 @@ export function UserAuthContextProvider({ children }) {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     setUser(null);
+    setToken(null);  // <-- limpar token no estado
   };
 
   const resetPassword = (email) => {
@@ -87,7 +92,7 @@ export function UserAuthContextProvider({ children }) {
 
   return (
     <UserAuthContext.Provider
-      value={{ user, loading, error, signUp, logIn, logOut, resetPassword }}
+      value={{ user, token, loading, error, signUp, logIn, logOut, resetPassword }}
     >
       {children}
     </UserAuthContext.Provider>

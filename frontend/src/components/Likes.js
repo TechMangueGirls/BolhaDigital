@@ -44,12 +44,15 @@ const Votacao = () => {
     backgroundColor: "#fff",
     paddingTop: "40px",
     textAlign: "center",
-    minHeight: "100vh"
+    minHeight: "100vh",
+    maxWidth: "480px",
+    margin: "0 auto",
+    boxSizing: "border-box",
   };
 
   return (
     <div style={containerStyle}>
-      <h1 style={{ color: "#0579b2", marginBottom: "10px" }}>Votação</h1>
+      <h1 style={{ color: "#0579b2", marginBottom: "10px", fontSize: "1.8rem" }}>Votação</h1>
       <p style={{ marginBottom: "30px" }}>
         Leia as frases abaixo e diga se você apoia essa mensagem.
       </p>
@@ -86,5 +89,6 @@ const Votacao = () => {
 };
 
 export default Votacao;
+
 
 
