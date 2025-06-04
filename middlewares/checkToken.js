@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 function checkToken(req, res, next) {
   const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(" ")[1];
+  const token = authHeader && authHeader.split(" ")[1]; // Espera formato: Bearer <token>
 
   if (!token) {
     return res.status(401).json({ msg: "Acesso negado! Token não encontrado." });
@@ -14,14 +14,16 @@ function checkToken(req, res, next) {
       console.error("Chave secreta JWT não configurada (process.env.SECRET)");
       return res.status(500).json({ msg: "Erro interno no servidor" });
     }
+
     const decoded = jwt.verify(token, secret);
-    req.userId = decoded.id;
-    next();
+    req.userId = decoded.id; // Adiciona o ID decodificado à requisição
+    next(); // Continua para o próximo middleware ou rota
   } catch (error) {
     return res.status(401).json({ msg: "Token inválido!" });
   }
 }
 
 module.exports = checkToken;
+
 
 
