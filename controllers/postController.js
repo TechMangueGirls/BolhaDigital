@@ -19,7 +19,6 @@ exports.createPost = async (req, res) => {
 
     await post.save();
 
-    // Popula o campo 'author' para retornar nome e username junto com a postagem
     const populatedPost = await Post.findById(post._id).populate('author', 'username name');
 
     const response = {
@@ -51,6 +50,65 @@ exports.getAllPosts = async (req, res) => {
     res.status(500).json({ msg: 'Erro ao buscar postagens!' });
   }
 };
+
+// Editar postagem
+exports.updatePost = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const { content } = req.body;
+    const userId = req.userId;
+
+    if (!content || content.trim() === '') {
+      return res.status(422).json({ msg: 'Conteúdo é obrigatório!' });
+    }
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ msg: 'Postagem não encontrada!' });
+    }
+
+    if (post.author.toString() !== userId) {
+      return res.status(403).json({ msg: 'Você não tem permissão para editar essa postagem!' });
+    }
+
+    post.content = content;
+    await post.save();
+
+    const updatedPost = await Post.findById(postId).populate('author', 'username name');
+
+    res.status(200).json({ msg: 'Postagem atualizada com sucesso!', post: updatedPost });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Erro ao atualizar postagem!' });
+  }
+};
+
+// Apagar postagem
+exports.deletePost = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const userId = req.userId;
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ msg: 'Postagem não encontrada!' });
+    }
+
+    if (post.author.toString() !== userId) {
+      return res.status(403).json({ msg: 'Você não tem permissão para apagar essa postagem!' });
+    }
+
+    await Post.findByIdAndDelete(postId);
+
+    res.status(200).json({ msg: 'Postagem apagada com sucesso!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Erro ao apagar postagem!' });
+  }
+};
+
 
 
 
