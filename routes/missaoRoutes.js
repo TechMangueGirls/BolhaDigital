@@ -3,6 +3,7 @@ const router = express.Router();
 const upload = require("../middlewares/upload");
 const checkToken = require("../middlewares/checkToken");
 const MissaoEnviada = require("../models/MissaoEnviada");
+const User = require("../models/User"); 
 
 // Enviar missão
 router.post(
@@ -43,9 +44,9 @@ router.post(
   }
 );
 
+// Buscar missões pendentes
 router.get("/api/missoes/pendentes", checkToken, async (req, res) => {
   try {
-  
     const missoesPendentes = await MissaoEnviada.find({ status: "pendente" }).populate('usuario', 'nome');
     res.json(missoesPendentes);
   } catch (erro) {
@@ -54,12 +55,11 @@ router.get("/api/missoes/pendentes", checkToken, async (req, res) => {
   }
 });
 
-
+// Atualizar status da missão (e adicionar pontos se aprovada)
 router.put("/api/missoes/:id/status", checkToken, async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
-
 
     if (!["aprovada", "rejeitada"].includes(status)) {
       return res.status(400).json({ mensagem: "Status inválido." });
@@ -71,7 +71,19 @@ router.put("/api/missoes/:id/status", checkToken, async (req, res) => {
       return res.status(404).json({ mensagem: "Missão não encontrada." });
     }
 
+    if (missao.status !== "pendente") {
+      return res.status(400).json({ mensagem: "Missão já foi avaliada." });
+    }
+
     missao.status = status;
+
+    if (status === "aprovada") {
+      // ✅ Somar 100 pontos ao usuário da missão
+      await User.findByIdAndUpdate(missao.usuario, {
+        $inc: { pontos: 100 },
+      });
+    }
+
     await missao.save();
 
     res.json({ mensagem: `Missão ${status} com sucesso.` });
@@ -82,8 +94,3 @@ router.put("/api/missoes/:id/status", checkToken, async (req, res) => {
 });
 
 module.exports = router;
-
-
-
-
-
