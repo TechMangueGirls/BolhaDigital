@@ -83,7 +83,7 @@ const MissaoDia = () => {
       <h2 style={titleStyle}>Missões</h2>
 
       <div style={{
-        backgroundColor: "#0579b2",
+        backgroundColor: "#58b7ff",
         color: "white",
         borderRadius: 16,
         padding: 20,
