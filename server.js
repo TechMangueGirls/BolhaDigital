@@ -12,8 +12,8 @@ const app = express();
 
 // Domínios permitidos
 const allowedOrigins = [
-  'https://bolha-digital1.onrender.com', // Frontend em produção
-  'http://localhost:3000',               // Frontend local para testes
+  'https://bolha-digital1.onrender.com', 
+  'http://localhost:3000',               
 ];
 
 // Configurações CORS
