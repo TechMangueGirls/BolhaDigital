@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useUserAuth } from "../context/UserAuthContext";
 import LogoFixa from "../components/LogoFixa";
 
-const MissaoDia = () => {
+const MissaoArte = () => {
   const navigate = useNavigate();
   const { token } = useUserAuth();
 
-  const [titulo] = useState("Denuncie (em qualquer rede social) um comentário ofensivo");
+  const [titulo] = useState("Elogie um artista (Desenhos, pinturas, canto, artesanato, etc)");
   const [imagens, setImagens] = useState([]);
   const [statusMsg, setStatusMsg] = useState("");
   const [enviando, setEnviando] = useState(false);
@@ -45,7 +45,7 @@ const MissaoDia = () => {
           Authorization: `Bearer ${token}`,
         },
         body: formData,
-        credentials: "include", // igual ao login
+        credentials: "include",
       });
 
       const data = await response.json();
@@ -77,17 +77,16 @@ const MissaoDia = () => {
       <h2 style={titleStyle}>Missões</h2>
 
       <div style={{ backgroundColor: "#58b7ff", color: "white", borderRadius: 16, padding: 20, textAlign: "center", marginBottom: 20 }}>
-        <h3 style={{ fontSize: 18, marginBottom: 8 }}>Dia</h3>
+        <h3 style={{ fontSize: 18, marginBottom: 8 }}>Arte</h3>
         <p style={{ fontWeight: "bold", marginBottom: 8 }}>🏆 100 pontos</p>
         <p style={{ fontSize: 14 }}>
-          Denuncie, em qualquer rede social, um comentário ofensivo que foi destinado a algo ou alguém. Depois, submeta o print (ou prints) comprovando.
+          Elogie publicamente um artista ou uma arte que você admira (como desenhos, pinturas, canto, artesanato, etc). Poste nas redes sociais e envie o print da publicação.
         </p>
         <div style={{ textAlign: "left", backgroundColor: "#ffffff", color: "#0579b2", borderRadius: 12, padding: 12, marginTop: 16 }}>
           <p>📌 O que deve conter no print (ou nos prints)?</p>
           <ul style={{ paddingLeft: 20, fontSize: 14 }}>
-            <li>Comentário a ser denunciado</li>
-            <li>Classificação da denúncia</li>
-            <li>Mensagem da denúncia concluída ou validada (quando houver)</li>
+            <li>O elogio feito</li>
+            <li> E o perfil do artista </li>
           </ul>
         </div>
       </div>
@@ -165,4 +164,4 @@ const MissaoDia = () => {
   );
 };
 
-export default MissaoDia;
+export default MissaoArte;
