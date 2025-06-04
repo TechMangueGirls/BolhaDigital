@@ -31,6 +31,7 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include", // <-- ESSA LINHA ADICIONADA
         body: JSON.stringify({
           identifier: login,
           password,
@@ -130,5 +131,6 @@ const Login = () => {
 };
 
 export default Login;
+
 
 

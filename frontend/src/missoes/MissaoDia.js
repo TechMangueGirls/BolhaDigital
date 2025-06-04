@@ -44,7 +44,8 @@ const MissaoDia = () => {
       const response = await fetch("http://localhost:5000/api/missoes/enviar", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // envia o token no header
+          // NÃO defina Content-Type aqui para FormData!
         },
         body: formData,
       });
@@ -74,36 +75,44 @@ const MissaoDia = () => {
   };
 
   return (
-    <div style={{
-      maxWidth: 400,
-      margin: "30px auto 0", // espaçamento superior
-      padding: 16,
-      fontFamily: "Arial, sans-serif"
-    }}>
+    <div
+      style={{
+        maxWidth: 400,
+        margin: "30px auto 0",
+        padding: 16,
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
       <h2 style={titleStyle}>Missões</h2>
 
-      <div style={{
-        backgroundColor: "#58b7ff",
-        color: "white",
-        borderRadius: 16,
-        padding: 20,
-        textAlign: "center",
-        marginBottom: 20
-      }}>
+      <div
+        style={{
+          backgroundColor: "#58b7ff",
+          color: "white",
+          borderRadius: 16,
+          padding: 20,
+          textAlign: "center",
+          marginBottom: 20,
+        }}
+      >
         <h3 style={{ fontSize: 18, marginBottom: 8 }}>Dia</h3>
         <p style={{ fontWeight: "bold", marginBottom: 8 }}>🏆 100 pontos</p>
         <p style={{ fontSize: 14 }}>
-          Denuncie, em qualquer rede social, um comentário ofensivo que foi destinado a algo ou alguém. Depois, submeta o print (ou prints) comprovando.
+          Denuncie, em qualquer rede social, um comentário ofensivo que foi
+          destinado a algo ou alguém. Depois, submeta o print (ou prints)
+          comprovando.
         </p>
 
-        <div style={{
-          textAlign: "left",
-          backgroundColor: "#ffffff",
-          color: "#0579b2",
-          borderRadius: 12,
-          padding: 12,
-          marginTop: 16
-        }}>
+        <div
+          style={{
+            textAlign: "left",
+            backgroundColor: "#ffffff",
+            color: "#0579b2",
+            borderRadius: 12,
+            padding: 12,
+            marginTop: 16,
+          }}
+        >
           <p>📌 O que deve conter no print (ou nos prints)?</p>
           <ul style={{ paddingLeft: 20, fontSize: 14 }}>
             <li>Comentário a ser denunciado</li>
@@ -114,21 +123,26 @@ const MissaoDia = () => {
       </div>
 
       <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
-        <div style={{
-          border: "2px dashed #0579b2",
-          borderRadius: 12,
-          padding: 20,
-          marginBottom: 16,
-          backgroundColor: "#f0faff",
-          position: "relative"
-        }}>
-          <label htmlFor="fileInput" style={{
-            display: "block",
-            color: "#0579b2",
-            fontWeight: "bold",
-            fontSize: 14,
-            marginBottom: 8
-          }}>
+        <div
+          style={{
+            border: "2px dashed #0579b2",
+            borderRadius: 12,
+            padding: 20,
+            marginBottom: 16,
+            backgroundColor: "#f0faff",
+            position: "relative",
+          }}
+        >
+          <label
+            htmlFor="fileInput"
+            style={{
+              display: "block",
+              color: "#0579b2",
+              fontWeight: "bold",
+              fontSize: 14,
+              marginBottom: 8,
+            }}
+          >
             Selecione as imagens da missão:
           </label>
 
@@ -143,7 +157,7 @@ const MissaoDia = () => {
 
           <button
             type="button"
-            onClick={() => document.getElementById('fileInput').click()}
+            onClick={() => document.getElementById("fileInput").click()}
             style={{
               backgroundColor: "#0579b2",
               color: "white",
@@ -152,7 +166,7 @@ const MissaoDia = () => {
               borderRadius: 20,
               cursor: "pointer",
               fontWeight: "bold",
-              fontSize: 14
+              fontSize: 14,
             }}
           >
             Escolher Imagens
@@ -165,25 +179,35 @@ const MissaoDia = () => {
           )}
         </div>
 
-        <button type="submit" disabled={enviando} style={{
-          backgroundColor: "#0579b2",
-          color: "white",
-          padding: "12px 30px",
-          borderRadius: 25,
-          border: "none",
-          fontWeight: "bold",
-          fontSize: 16,
-          cursor: "pointer"
-        }}>
+        <button
+          type="submit"
+          disabled={enviando}
+          style={{
+            backgroundColor: "#0579b2",
+            color: "white",
+            padding: "12px 30px",
+            borderRadius: 25,
+            border: "none",
+            fontWeight: "bold",
+            fontSize: 16,
+            cursor: "pointer",
+          }}
+        >
           {enviando ? "Enviando..." : "Enviar"}
         </button>
       </form>
 
-      {statusMsg && <p style={{
-        marginTop: 16,
-        color: "red",
-        textAlign: "center"
-      }}>{statusMsg}</p>}
+      {statusMsg && (
+        <p
+          style={{
+            marginTop: 16,
+            color: "red",
+            textAlign: "center",
+          }}
+        >
+          {statusMsg}
+        </p>
+      )}
 
       <button
         onClick={() => navigate(-1)}
@@ -196,7 +220,7 @@ const MissaoDia = () => {
           cursor: "pointer",
           display: "block",
           marginLeft: "auto",
-          marginRight: "auto"
+          marginRight: "auto",
         }}
       >
         Voltar
@@ -208,3 +232,4 @@ const MissaoDia = () => {
 };
 
 export default MissaoDia;
+
