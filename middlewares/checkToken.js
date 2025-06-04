@@ -4,10 +4,6 @@ function checkToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(" ")[1]; // Espera formato: Bearer <token>
 
-  // Logs para debug
-  console.log("🔍 Authorization header:", authHeader);
-  console.log("🔑 Token extraído:", token);
-
   if (!token) {
     return res.status(401).json({ msg: "Acesso negado! Token não encontrado." });
   }
@@ -20,8 +16,8 @@ function checkToken(req, res, next) {
     }
 
     const decoded = jwt.verify(token, secret);
-    req.userId = decoded.id; // Adiciona o ID decodificado à requisição
-    next(); // Continua para o próximo middleware ou rota
+    req.userId = decoded.id; 
+    next(); 
   } catch (error) {
     console.error("❌ Erro ao verificar token:", error.message);
     return res.status(401).json({ msg: "Token inválido!" });
