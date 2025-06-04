@@ -5,7 +5,8 @@ import BottomNavigation from "./BottomNavigation";
 import LogoutButton from "./LogoutBottom";
 import LogoFixa from "./LogoFixa";
 
-// Palavras ofensivas do .env
+import { FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa"; 
+
 const offensiveWords = process.env.REACT_APP_OFFENSIVE_WORDS
   ? process.env.REACT_APP_OFFENSIVE_WORDS.split(",").map((w) => w.trim().toLowerCase())
   : [];
@@ -13,130 +14,16 @@ const offensiveWords = process.env.REACT_APP_OFFENSIVE_WORDS
 function Post() {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [createdPost, setCreatedPost] = useState(null);
   const [posts, setPosts] = useState([]);
-  const { token } = useUserAuth();
+  const { token, user } = useUserAuth();
 
-  const containerStyle = {
-    minHeight: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    backgroundColor: "#fff",
-    padding: "20px",
-    boxSizing: "border-box",
-    maxWidth: "600px",
-    margin: "0 auto",
-    fontFamily: "Arial, sans-serif",
-    position: "relative",
-    paddingBottom: "80px", // espaço para BottomNavigation
-  };
-
-  const titleStyle = {
-    color: "#0778b1",
-    fontSize: "1.8rem",
-    marginBottom: "20px",
-    textAlign: "center",
-  };
-
-  const formWrapperStyle = {
-    position: "relative",
-    marginBottom: "30px",
-  };
-
-  const textareaStyle = {
-    width: "100%",
-    minHeight: "120px",
-    padding: "16px",
-    fontSize: "1.1rem",
-    borderRadius: "16px",
-    border: "1.8px solid #ddd",
-    boxSizing: "border-box",
-    resize: "vertical",
-    fontFamily: "inherit",
-    boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
-    transition: "border-color 0.3s ease, box-shadow 0.3s ease",
-    outline: "none",
-    backgroundColor: "transparent",  // fundo transparente
-    color: "#222",
-  };
-
-  const buttonStyle = {
-  backgroundColor: "#0579b2",
-  color: "white",
-  border: "none",
-  borderRadius: "50%",
-  width: "40px",
-  height: "40px",
-  fontSize: "1.8rem",
-  fontWeight: "900",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  boxShadow: "0px 4px 10px rgba(5, 121, 178, 0.5)",
-  cursor: "pointer",
-  position: "absolute",
-  top: "-20px",
-  right: "4px",
-  userSelect: "none",
-  lineHeight: 1,
-};
-
-  const messageStyle = {
-    marginTop: "10px",
-    textAlign: "center",
-  };
-
-  const postsWrapperStyle = {
-    flexGrow: 1,
-    overflowY: "auto",
-    paddingTop: "10px",
-  };
-
-  const postContainerStyle = {
-    border: "1px solid #e0e0e0",
-    padding: "15px",
-    borderRadius: "12px",
-    marginBottom: "15px",
-    backgroundColor: "#f9f9f9",
-  };
-
-  const usernameStyle = {
-    fontWeight: "bold",
-    color: "#0579b2",
-    fontSize: "1.1rem",
-  };
-
-  const postContentStyle = {
-    marginTop: "8px",
-    whiteSpace: "pre-wrap",
-    fontSize: "0.95rem",
-    color: "#333",
-  };
-
-  const dateStyle = {
-    marginTop: "8px",
-    fontSize: "0.8rem",
-    color: "#999",
-  };
-
-  const formatDateTime = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
+  const [editingPostId, setEditingPostId] = useState(null);
+  const [editingContent, setEditingContent] = useState("");
 
   const fetchPosts = useCallback(async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/posts`);
       const data = await response.json();
-
       if (response.ok && Array.isArray(data.posts)) {
         setPosts(data.posts);
       } else {
@@ -153,19 +40,15 @@ function Post() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setError("");
-    setMessage("");
-    setIsSuccess(false);
 
     if (!content.trim()) {
       setError("Digite algo para postar!");
       return;
     }
 
-    const lowerContent = content.toLowerCase();
     const hasOffensive = offensiveWords.some((word) =>
-      lowerContent.includes(word)
+      new RegExp(`\\b${word}\\b`, "i").test(content)
     );
 
     if (hasOffensive) {
@@ -195,14 +78,101 @@ function Post() {
         return;
       }
 
-      setMessage("Post criado com sucesso!");
-      setIsSuccess(true);
-      setCreatedPost(data.post);
       setContent("");
       fetchPosts();
     } catch (error) {
       setError("Erro na requisição: " + error.message);
     }
+  };
+
+  const startEditing = (post) => {
+    setEditingPostId(post._id);
+    setEditingContent(post.content);
+    setError("");
+  };
+
+  const cancelEditing = () => {
+    setEditingPostId(null);
+    setEditingContent("");
+    setError("");
+  };
+
+  const saveEditing = async () => {
+    if (!editingContent.trim()) {
+      setError("Conteúdo não pode ficar vazio!");
+      return;
+    }
+
+    const hasOffensive = offensiveWords.some((word) =>
+      new RegExp(`\\b${word}\\b`, "i").test(editingContent)
+    );
+
+    if (hasOffensive) {
+      setError("Não é possível enviar: palavra ofensiva detectada!");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/posts/${editingPostId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ content: editingContent }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.msg || "Erro ao editar post");
+        return;
+      }
+
+      setEditingPostId(null);
+      setEditingContent("");
+      fetchPosts();
+    } catch (error) {
+      setError("Erro na requisição: " + error.message);
+    }
+  };
+
+  const handleDelete = async (postId) => {
+    const confirmed = window.confirm(
+      `Tem certeza que deseja apagar o post de @${user?.username || "usuário"}?`
+    );
+    if (!confirmed) return;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/posts/${postId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.msg || "Erro ao apagar post");
+        return;
+      }
+
+      fetchPosts();
+    } catch (error) {
+      setError("Erro na requisição: " + error.message);
+    }
+  };
+
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   if (!token) {
@@ -213,82 +183,237 @@ function Post() {
     <>
       <LogoFixa />
       <LogoutButton />
-      <div style={containerStyle}>
-        <h1 style={titleStyle}>Posts</h1>
 
-        <div style={formWrapperStyle}>
-          <form onSubmit={handleSubmit}>
+      <div style={{ padding: "0", margin: "0", fontFamily: "Arial, sans-serif" }}>
+        <div
+          style={{
+            padding: "16px",
+            position: "sticky",
+            top: 0,
+            zIndex: 10,
+            background: "transparent",
+          }}
+        >
+          <h1
+            style={{
+              color: "#0778b1",
+              fontSize: "1.5rem",
+              marginBottom: "8px",
+              textAlign: "center",
+            }}
+          >
+            Posts
+          </h1>
+
+          <form
+            onSubmit={handleSubmit}
+            style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}
+          >
             <textarea
-              style={textareaStyle}
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Compartilhe algo..."
+              style={{
+                flex: 1,
+                padding: "10px",
+                fontSize: "1rem",
+                borderRadius: "10px",
+                border: "1px solid #ccc",
+                resize: "vertical",
+                backgroundColor: "#fff",
+              }}
             />
-            <button type="submit" style={buttonStyle}>+</button>
-
-            {error && <p style={{ ...messageStyle, color: "red" }}>{error}</p>}
-            {isSuccess && message && (
-              <p style={{ ...messageStyle, color: "green" }}>{message}</p>
-            )}
-
-            {isSuccess && createdPost && (
-              <div
-                style={{
-                  ...postContainerStyle,
-                  borderColor: "green",
-                  backgroundColor: "#e6ffe6",
-                }}
-              >
-                <strong style={usernameStyle}>
-                  {createdPost.author?.username
-                    ? "@" + createdPost.author.username
-                    : "@você"}
-                </strong>
-                <p style={postContentStyle}>{createdPost.content}</p>
-                <small style={dateStyle}>
-                  {formatDateTime(createdPost.createdAt)}
-                </small>
-              </div>
-            )}
+            <button
+              type="submit"
+              style={{
+                backgroundColor: "#0579b2",
+                color: "#fff",
+                border: "none",
+                borderRadius: "50%",
+                width: "40px",
+                height: "40px",
+                fontSize: "1.5rem",
+                fontWeight: "bold",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                boxShadow: "0 4px 8px rgba(5, 121, 178, 0.4)",
+              }}
+            >
+              +
+            </button>
           </form>
+
+          {error && (
+            <p style={{ color: "red", fontSize: "0.9rem", marginTop: "8px" }}>{error}</p>
+          )}
         </div>
 
-        <div style={postsWrapperStyle}>
+        <div
+          style={{
+            maxHeight: "calc(100vh - 200px)",
+            overflowY: "auto",
+            padding: "16px",
+            background: "transparent",
+            scrollbarWidth: "none", // Firefox
+          }}
+        >
+          <style>
+            {`
+              ::-webkit-scrollbar {
+                display: none;
+              }
+              .btn-icon {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                border: none;
+                background: none;
+                cursor: pointer;
+                font-size: 0.9rem;
+                padding: 4px 8px;
+                border-radius: 6px;
+                transition: background-color 0.2s ease;
+              }
+              .btn-icon.edit {
+                color: #0d6efd; /* azul */
+              }
+              .btn-icon.edit:hover {
+                background-color: #e7f1ff;
+              }
+              .btn-icon.delete {
+                color: #dc3545; /* vermelho */
+              }
+              .btn-icon.delete:hover {
+                background-color: #f8d7da;
+              }
+              .btn-icon.save {
+                color: #198754; /* verde */
+              }
+              .btn-icon.save:hover {
+                background-color: #d1e7dd;
+              }
+              .btn-icon.cancel {
+                color: #6c757d; /* cinza */
+              }
+              .btn-icon.cancel:hover {
+                background-color: #e2e3e5;
+              }
+            `}
+          </style>
+
           {posts.length > 0 ? (
-            posts.map((post) => (
-              <div key={post._id || post.id} style={postContainerStyle}>
-                <strong style={usernameStyle}>
-                  {post.author?.username
-                    ? "@" + post.author.username
-                    : "@usuário"}
-                </strong>
-                <p style={postContentStyle}>{post.content}</p>
-                <small style={dateStyle}>{formatDateTime(post.createdAt)}</small>
-              </div>
-            ))
+            posts.map((post) => {
+              const isAuthor = user && post.author && post.author._id === user._id;
+              const isEditing = editingPostId === post._id;
+
+              return (
+                <div
+                  key={post._id || post.id}
+                  style={{
+                    border: "1px solid #0579b2",
+                    borderRadius: "12px",
+                    padding: "16px",
+                    backgroundColor: "#ffffff",
+                    marginBottom: "12px",
+                    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.05)",
+                  }}
+                >
+                  <strong style={{ color: "#0579b2", fontSize: "1rem" }}>
+                    {post.author?.username ? "@" + post.author.username : "@usuário"}
+                  </strong>
+
+                  {isEditing ? (
+                    <>
+                      <textarea
+                        value={editingContent}
+                        onChange={(e) => setEditingContent(e.target.value)}
+                        style={{
+                          width: "100%",
+                          minHeight: "80px",
+                          marginTop: "8px",
+                          fontSize: "1rem",
+                          borderRadius: "8px",
+                          border: "1px solid #ccc",
+                          padding: "8px",
+                        }}
+                      />
+                      <div style={{ marginTop: "8px" }}>
+                        <button
+                          onClick={saveEditing}
+                          className="btn-icon save"
+                          title="Salvar"
+                          type="button"
+                          style={{ marginRight: "8px" }}
+                        >
+                          <FaSave />
+                          Salvar
+                        </button>
+                        <button
+                          onClick={cancelEditing}
+                          className="btn-icon cancel"
+                          title="Cancelar"
+                          type="button"
+                        >
+                          <FaTimes />
+                          Cancelar
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <p
+                      style={{
+                        fontSize: "0.95rem",
+                        marginTop: "6px",
+                        marginBottom: "8px",
+                        color: "#0579b2",
+                        whiteSpace: "pre-wrap",
+                      }}
+                    >
+                      {post.content}
+                    </p>
+                  )}
+
+                  <small style={{ fontSize: "0.75rem", color: "#999" }}>
+                    {formatDateTime(post.createdAt)}
+                  </small>
+
+                  {!isEditing && isAuthor && (
+                    <div style={{ marginTop: "8px" }}>
+                      <button
+                        onClick={() => startEditing(post)}
+                        className="btn-icon edit"
+                        title="Editar"
+                        type="button"
+                        style={{ marginRight: "8px" }}
+                      >
+                        <FaEdit />
+                        Editar
+                      </button>
+                      <button
+                        onClick={() => handleDelete(post._id)}
+                        className="btn-icon delete"
+                        title="Excluir"
+                        type="button"
+                      >
+                        <FaTrash />
+                        Excluir
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })
           ) : (
-            <p style={{ textAlign: "center" }}>Nenhum post encontrado.</p>
+            <p style={{ textAlign: "center", marginTop: "20px" }}>Nenhum post encontrado.</p>
           )}
         </div>
       </div>
+
       <BottomNavigation />
     </>
   );
 }
 
 export default Post;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
