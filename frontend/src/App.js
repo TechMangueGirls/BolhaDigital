@@ -15,8 +15,8 @@ import Perfil from "./components/Perfil";
 import Welcome from "./components/Welcome";
 import MissoesDiarias from "./components/MissoesDiarias";
 
-// 📌 Importando a Missão do Dia
 import MissaoDia from "./missoes/MissaoDia";
+import PainelAdminMissoes from "./components/PainelAdminMissoes"; 
 
 function App() {
   return (
@@ -27,14 +27,9 @@ function App() {
             <Routes>
               {/* Tela Welcome na raiz */}
               <Route path="/" element={<Welcome />} />
-
-              {/* Tela Login na rota /login */}
               <Route path="/login" element={<Login />} />
-
-              {/* Tela de cadastro */}
               <Route path="/signup" element={<Signup />} />
 
-              {/* Rotas protegidas */}
               <Route
                 path="/home"
                 element={
@@ -84,12 +79,21 @@ function App() {
                 }
               />
 
-              {/* Rota da Missão do Dia */}
               <Route
                 path="/missao/dia"
                 element={
                   <ProtectedRoute>
                     <MissaoDia />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* ✅ Rota do Painel Admin Missões */}
+              <Route
+                path="/paineladminmissoes"
+                element={
+                  <ProtectedRoute>
+                    <PainelAdminMissoes />
                   </ProtectedRoute>
                 }
               />
