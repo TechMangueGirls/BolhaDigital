@@ -10,11 +10,13 @@ const missaoRoutes = require('./routes/missaoRoutes');
 
 const app = express();
 
+// Domínios permitidos
 const allowedOrigins = [
-  'https://bolha-digital1.onrender.com',
-  'http://localhost:3000',
+  'https://bolha-digital1.onrender.com', // Frontend em produção
+  'http://localhost:3000',               // Frontend local para testes
 ];
 
+// Configurações CORS
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -24,21 +26,29 @@ const corsOptions = {
     }
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
+// Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
 
+// Pasta para arquivos enviados
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Conexão com o banco
 connectDB();
 
+// Rotas
 app.use(authRoutes);
 app.use(postRoutes);
-app.use(missaoRoutes); 
+app.use(missaoRoutes);
 
+// Inicialização do servidor
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+
 
 
 

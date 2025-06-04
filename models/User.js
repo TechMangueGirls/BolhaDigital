@@ -6,6 +6,11 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   dob: { type: Date, required: true },
   password: { type: String, required: true },
+  role: {
+    type: String,
+    enum: ['user', 'admin', 'moderator'], // papéis permitidos
+    default: 'user', // valor padrão
+  },
 });
 
 module.exports = mongoose.model('User', userSchema);
