@@ -1,16 +1,22 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
+
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
+
 import Missoes from "./components/Missoes";
 import Post from "./components/Post";
 import Likes from "./components/Likes";
 import Perfil from "./components/Perfil";
 import Welcome from "./components/Welcome";
+import MissoesDiarias from "./components/MissoesDiarias";
+
+// 📌 Importando a Missão do Dia
+import MissaoDia from "./missoes/MissaoDia";
 
 function App() {
   return (
@@ -25,7 +31,7 @@ function App() {
               {/* Tela Login na rota /login */}
               <Route path="/login" element={<Login />} />
 
-              {/* Signup continua */}
+              {/* Tela de cadastro */}
               <Route path="/signup" element={<Signup />} />
 
               {/* Rotas protegidas */}
@@ -42,6 +48,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Missoes />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/missoesdiarias"
+                element={
+                  <ProtectedRoute>
+                    <MissoesDiarias />
                   </ProtectedRoute>
                 }
               />
@@ -69,6 +83,16 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
+              {/* Rota da Missão do Dia */}
+              <Route
+                path="/missao/dia"
+                element={
+                  <ProtectedRoute>
+                    <MissaoDia />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </Col>
         </Row>
@@ -78,6 +102,3 @@ function App() {
 }
 
 export default App;
-
-
-

@@ -4,7 +4,7 @@ const UserAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);  // <-- guardar token aqui
+  const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -31,7 +31,7 @@ export function UserAuthContextProvider({ children }) {
 
         if (res.ok && data.user) {
           setUser(data.user);
-          setToken(localToken);  // <-- setar token no estado
+          setToken(localToken);
         } else {
           logOut();
           setError(data.msg || data.error);
@@ -75,7 +75,7 @@ export function UserAuthContextProvider({ children }) {
     localStorage.setItem("token", userToken);
     localStorage.setItem("userId", userData._id);
     setUser(userData);
-    setToken(userToken);  // <-- setar token no estado
+    setToken(userToken);
   };
 
   const logOut = () => {
@@ -83,7 +83,7 @@ export function UserAuthContextProvider({ children }) {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     setUser(null);
-    setToken(null);  // <-- limpar token no estado
+    setToken(null);
   };
 
   const resetPassword = (email) => {
@@ -102,3 +102,4 @@ export function UserAuthContextProvider({ children }) {
 export function useUserAuth() {
   return useContext(UserAuthContext);
 }
+
