@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
 import BottomNavigation from "./BottomNavigation";
 import LogoutButton from "./LogoutBottom"; 
 import LogoFixa from "./LogoFixa";
 
-
 const Perfil = () => {
-  const { user } = useUserAuth();
+  const { user, refreshUserData } = useUserAuth();
 
+  useEffect(() => {
+    refreshUserData(); 
+  }, [refreshUserData]); 
   if (!user) {
     return <div>Carregando...</div>;
   }
@@ -26,6 +28,9 @@ const Perfil = () => {
         </div>
         <div className="perfil-item">
           <strong>Usuário:</strong> @{user.username}
+        </div>
+        <div className="perfil-item">
+          <strong>Bubbles:</strong> {user.pontos ?? 0} 🫧
         </div>
 
         <div className="perfil-stats">

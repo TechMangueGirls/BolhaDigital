@@ -17,6 +17,7 @@ import MissoesDiarias from "./components/MissoesDiarias";
 
 import MissaoDia from "./missoes/MissaoDia";
 import PainelAdminMissoes from "./components/PainelAdminMissoes"; 
+import MissaoArte from "./missoes/MissaoArte";
 
 function App() {
   return (
@@ -25,7 +26,6 @@ function App() {
         <Row>
           <Col>
             <Routes>
-              {/* Tela Welcome na raiz */}
               <Route path="/" element={<Welcome />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
@@ -78,7 +78,6 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-
               <Route
                 path="/missao/dia"
                 element={
@@ -87,8 +86,14 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-
-              {/* ✅ Rota do Painel Admin Missões */}
+              <Route
+                path="/missao/arte"
+                element={
+                  <ProtectedRoute>
+                    <MissaoArte />
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/paineladminmissoes"
                 element={
@@ -106,3 +111,4 @@ function App() {
 }
 
 export default App;
+

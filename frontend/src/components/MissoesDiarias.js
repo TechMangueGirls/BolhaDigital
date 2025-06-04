@@ -8,10 +8,9 @@ const MissoesDiarias = () => {
 
   const missoes = [
     { titulo: "Dia", descricao: "Denuncie (em qualquer rede social), um comentário ofensivo", pontos: 100, rota: "/missao/dia" },
-    { titulo: "Páscoa", descricao: "Faça um post falando sobre a páscoa", pontos: 500, rota: "/missao/pascoa" },
-    { titulo: "Arte", descricao: "Elogie um artista (Desenhos, pinturas, canto, artesanato, etc)", pontos: 150, rota: "/missao/arte" },
-    { titulo: "Música", descricao: "Indique uma música que faz você se sentir bem", pontos: 200, rota: "/missao/musica" },
-    { titulo: "Filme", descricao: "Indique um filme que faz você se sentir bem", pontos: 250, rota: "/missao/filme" },
+    { titulo: "Arte", descricao: "Elogie um artista (Desenhos, pinturas, canto, artesanato, etc)", pontos: 100, rota: "/missao/arte" },
+    { titulo: "Música", descricao: "Indique uma música que faz você se sentir bem", pontos: 100, rota: "/missao/musica" },
+    { titulo: "Filme", descricao: "Indique um filme que faz você se sentir bem", pontos: 100, rota: "/missao/filme" },
   ];
 
   const containerStyle = {

@@ -12,15 +12,14 @@ export function UserAuthContextProvider({ children }) {
     const loadUser = async () => {
       setLoading(true);
       const localToken = localStorage.getItem("token");
-      const localUser = localStorage.getItem("user");
 
-      if (!localToken || !localUser) {
+      if (!localToken) {
         setLoading(false);
         return;
       }
 
       try {
-        const res = await fetch("http://localhost:5000/user/me", {
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/user/me`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${localToken}`,
@@ -32,6 +31,7 @@ export function UserAuthContextProvider({ children }) {
         if (res.ok && data.user) {
           setUser(data.user);
           setToken(localToken);
+          localStorage.setItem("user", JSON.stringify(data.user));
         } else {
           logOut();
           setError(data.msg || data.error);
@@ -49,7 +49,7 @@ export function UserAuthContextProvider({ children }) {
 
   const signUp = async (name, username, email, dob, password) => {
     try {
-      const res = await fetch("http://localhost:5000/auth/register", {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -90,9 +90,27 @@ export function UserAuthContextProvider({ children }) {
     alert("Instruções de recuperação de senha enviadas para o seu e-mail.");
   };
 
+  const refreshUserData = async () => {
+    if (!user || !token) return;
+    try {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/user/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      if (res.ok && data.user) {
+        setUser(data.user);
+        localStorage.setItem("user", JSON.stringify(data.user));
+      }
+    } catch (err) {
+      console.error("Erro ao atualizar usuário:", err);
+    }
+  };
+
   return (
     <UserAuthContext.Provider
-      value={{ user, token, loading, error, signUp, logIn, logOut, resetPassword }}
+      value={{ user, token, loading, error, signUp, logIn, logOut, resetPassword, refreshUserData }}
     >
       {children}
     </UserAuthContext.Provider>
