@@ -235,7 +235,7 @@ const Home = () => {
 
       <div
         style={{ ...styles.sharedMissionCard, ...styles.missionCardBlue }}
-        onClick={() => navigate("/missao")}
+        onClick={() => navigate("/MissoesDiarias")}
         onMouseEnter={() => setHoveredCard('missao')}
         onMouseLeave={() => setHoveredCard(null)}
       >

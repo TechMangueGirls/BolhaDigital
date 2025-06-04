@@ -195,15 +195,16 @@ function Post() {
           }}
         >
           <h1
-            style={{
-              color: "#0778b1",
-              fontSize: "1.5rem",
-              marginBottom: "8px",
-              textAlign: "center",
-            }}
-          >
-            Posts
-          </h1>
+  style={{
+    color: "#0579b2",
+    fontSize: "1.8rem",
+    marginBottom: "10px",
+    textAlign: "center",
+    wordWrap: "break-word",
+  }}
+>
+  Posts
+</h1>
 
           <form
             onSubmit={handleSubmit}
