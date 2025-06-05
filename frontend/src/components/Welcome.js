@@ -144,7 +144,7 @@ const Welcome = () => {
             <p className="info-text">Para mais informações assista ao nosso vídeo.</p>
             <div className="video-wrapper">
               <iframe
-                src="https://www.youtube.com/embed/YOUTUBE_VIDEO_ID"
+                src="https://youtu.be/qhnsUwyxJrk"
                 title="Para mais informações"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
