@@ -8,16 +8,18 @@ import Signup from "./components/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 
-import Missoes from "./components/Missoes";
 import Post from "./components/Post";
 import Likes from "./components/Likes";
 import Perfil from "./components/Perfil";
 import Welcome from "./components/Welcome";
 import MissoesDiarias from "./components/MissoesDiarias";
+import Recompensas from "./components/Recompensas";  // import do componente Recompensas
 
 import MissaoDia from "./missoes/MissaoDia";
-import PainelAdminMissoes from "./components/PainelAdminMissoes"; 
 import MissaoArte from "./missoes/MissaoArte";
+import MissaoMusica from "./missoes/MissaoMusica";
+import MissaoFilme from "./missoes/MissaoFilme";
+import PainelAdminMissoes from "./components/PainelAdminMissoes";
 
 function App() {
   return (
@@ -39,18 +41,18 @@ function App() {
                 }
               />
               <Route
-                path="/missoes"
-                element={
-                  <ProtectedRoute>
-                    <Missoes />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
                 path="/missoesdiarias"
                 element={
                   <ProtectedRoute>
                     <MissoesDiarias />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/recompensas"
+                element={
+                  <ProtectedRoute>
+                    <Recompensas />
                   </ProtectedRoute>
                 }
               />
@@ -95,6 +97,22 @@ function App() {
                 }
               />
               <Route
+                path="/missao/musica"
+                element={
+                  <ProtectedRoute>
+                    <MissaoMusica />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/missao/filme"
+                element={
+                  <ProtectedRoute>
+                    <MissaoFilme />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/paineladminmissoes"
                 element={
                   <ProtectedRoute>
@@ -111,4 +129,3 @@ function App() {
 }
 
 export default App;
-
