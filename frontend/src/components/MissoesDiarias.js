@@ -46,6 +46,7 @@ const MissoesDiarias = () => {
     borderRadius: "15px",
     color: "white",
     padding: "16px",
+    paddingBottom: "36px", // AUMENTADO para evitar sobreposição da seta
     marginBottom: "16px",
     position: "relative",
     boxShadow: "0 2px 6px rgba(0,0,0,0.1)",

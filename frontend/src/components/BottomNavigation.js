@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../assets/style/BottomNavigation.css';
 
-import missoesIcon from '../assets/img/missoes.png';
 import postIcon from '../assets/img/post.png';
 import casaIcon from '../assets/img/casa.png';
 import likeIcon from '../assets/img/like.png';
@@ -13,9 +12,6 @@ function BottomNavigation() {
 
   return (
     <div className="bottom-navigation">
-      <div className="nav-icon" onClick={() => navigate('/missoes')}>
-        <img src={missoesIcon} alt="Missões" className="icon-image" />
-      </div>
 
       <div className="nav-icon" onClick={() => navigate('/post')}>
         <img src={postIcon} alt="Postagens" className="icon-image" />
