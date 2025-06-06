@@ -91,7 +91,7 @@ export function UserAuthContextProvider({ children }) {
   };
 
   const refreshUserData = async () => {
-    if (!user || !token) return;
+    if (!token) return;
     try {
       const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/user/me`, {
         headers: {
