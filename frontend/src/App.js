@@ -13,13 +13,13 @@ import Likes from "./components/Likes";
 import Perfil from "./components/Perfil";
 import Welcome from "./components/Welcome";
 import MissoesDiarias from "./components/MissoesDiarias";
-import Recompensas from "./components/Recompensas";  // import do componente Recompensas
+import Recompensas from "./components/Recompensas";
 
 import MissaoDia from "./missoes/MissaoDia";
 import MissaoArte from "./missoes/MissaoArte";
 import MissaoMusica from "./missoes/MissaoMusica";
 import MissaoFilme from "./missoes/MissaoFilme";
-import PainelAdminMissoes from "./components/PainelAdminMissoes";
+import ValidarMissoes from "./components/ValidarMissoes"; 
 
 function App() {
   return (
@@ -112,11 +112,12 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              
               <Route
-                path="/paineladminmissoes"
+                path="/validar-missoes" 
                 element={
                   <ProtectedRoute>
-                    <PainelAdminMissoes />
+                    <ValidarMissoes />
                   </ProtectedRoute>
                 }
               />

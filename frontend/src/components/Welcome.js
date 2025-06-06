@@ -72,30 +72,53 @@ const Welcome = () => {
           background-color: #045a8d;
           box-shadow: 0 6px 12px rgb(4 90 141 / 0.6);
         }
-        .video-wrapper {
-          width: 100%;
-          aspect-ratio: 16 / 9;
-          border-radius: 12px;
-          overflow: hidden;
-          position: relative;
-          box-shadow: 0 0 8px 3px rgba(5, 121, 178, 0.2);
-          transition: box-shadow 0.3s ease;
-          max-width: 480px;
-        }
-        .video-wrapper:hover {
-          box-shadow: 0 0 12px 4px rgba(5, 121, 178, 0.3);
-        }
-        iframe {
-          width: 100%;
-          height: 100%;
-          border: none;
-        }
         .info-text {
           font-size: 1.1rem;
           font-weight: 600;
           color: #024a86;
           margin-bottom: 16px;
           max-width: 320px;
+        }
+        .video-thumbnail {
+          position: relative;
+          width: 100%;
+          max-width: 480px;
+          aspect-ratio: 16/9;
+          border-radius: 12px;
+          overflow: hidden;
+          cursor: pointer;
+          box-shadow: 0 0 8px 3px rgba(5, 121, 178, 0.2);
+          transition: box-shadow 0.3s ease;
+        }
+        .video-thumbnail:hover {
+          box-shadow: 0 0 12px 4px rgba(5, 121, 178, 0.3);
+        }
+        .video-thumbnail img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+        .play-button {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: rgba(0, 0, 0, 0.6);
+          border: none;
+          border-radius: 50%;
+          width: 64px;
+          height: 64px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: white;
+          font-size: 28px;
+          cursor: pointer;
+          transition: background 0.3s ease;
+        }
+        .play-button:hover {
+          background: rgba(0, 0, 0, 0.8);
         }
         footer {
           width: 100%;
@@ -124,7 +147,7 @@ const Welcome = () => {
           .welcome-button {
             max-width: 100%;
           }
-          .video-wrapper {
+          .video-thumbnail {
             max-width: 100%;
           }
         }
@@ -142,14 +165,18 @@ const Welcome = () => {
 
           <div className="welcome-right">
             <p className="info-text">Para mais informações assista ao nosso vídeo.</p>
-            <div className="video-wrapper">
-              <iframe
-                src="https://youtu.be/qhnsUwyxJrk"
-                title="Para mais informações"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
+            <a
+              href="https://youtu.be/qhnsUwyxJrk"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="video-thumbnail"
+            >
+              <img
+                src="https://img.youtube.com/vi/qhnsUwyxJrk/hqdefault.jpg"
+                alt="Capa do vídeo"
+              />
+              <button className="play-button">▶</button>
+            </a>
           </div>
         </div>
 
@@ -172,4 +199,3 @@ const Welcome = () => {
 };
 
 export default Welcome;
-

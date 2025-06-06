@@ -5,7 +5,7 @@ import BottomNavigation from "./BottomNavigation";
 import LogoutButton from "./LogoutBottom";
 import LogoFixa from "./LogoFixa";
 
-import { FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa"; 
+import { FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa";
 
 const offensiveWords = process.env.REACT_APP_OFFENSIVE_WORDS
   ? process.env.REACT_APP_OFFENSIVE_WORDS.split(",").map((w) => w.trim().toLowerCase())
@@ -15,12 +15,14 @@ function Post() {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { token, user } = useUserAuth();
 
   const [editingPostId, setEditingPostId] = useState(null);
   const [editingContent, setEditingContent] = useState("");
 
   const fetchPosts = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await fetch(`${API_BASE_URL}/posts`);
       const data = await response.json();
@@ -31,6 +33,8 @@ function Post() {
       }
     } catch {
       setPosts([]);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -195,16 +199,16 @@ function Post() {
           }}
         >
           <h1
-  style={{
-    color: "#0579b2",
-    fontSize: "1.8rem",
-    marginBottom: "10px",
-    textAlign: "center",
-    wordWrap: "break-word",
-  }}
->
-  Posts
-</h1>
+            style={{
+              color: "#0579b2",
+              fontSize: "1.8rem",
+              marginBottom: "10px",
+              textAlign: "center",
+              wordWrap: "break-word",
+            }}
+          >
+            Posts
+          </h1>
 
           <form
             onSubmit={handleSubmit}
@@ -257,7 +261,7 @@ function Post() {
             overflowY: "auto",
             padding: "16px",
             background: "transparent",
-            scrollbarWidth: "none", // Firefox
+            scrollbarWidth: "none",
           }}
         >
           <style>
@@ -278,25 +282,25 @@ function Post() {
                 transition: background-color 0.2s ease;
               }
               .btn-icon.edit {
-                color: #0d6efd; /* azul */
+                color: #0d6efd;
               }
               .btn-icon.edit:hover {
                 background-color: #e7f1ff;
               }
               .btn-icon.delete {
-                color: #dc3545; /* vermelho */
+                color: #dc3545;
               }
               .btn-icon.delete:hover {
                 background-color: #f8d7da;
               }
               .btn-icon.save {
-                color: #198754; /* verde */
+                color: #198754;
               }
               .btn-icon.save:hover {
                 background-color: #d1e7dd;
               }
               .btn-icon.cancel {
-                color: #6c757d; /* cinza */
+                color: #6c757d;
               }
               .btn-icon.cancel:hover {
                 background-color: #e2e3e5;
@@ -304,7 +308,9 @@ function Post() {
             `}
           </style>
 
-          {posts.length > 0 ? (
+          {loading ? (
+            <p style={{ textAlign: "center", marginTop: "20px" }}>Carregando postagens...</p>
+          ) : posts.length > 0 ? (
             posts.map((post) => {
               const isAuthor = user && post.author && post.author._id === user._id;
               const isEditing = editingPostId === post._id;

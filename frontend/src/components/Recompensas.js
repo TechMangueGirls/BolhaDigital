@@ -6,8 +6,13 @@ import LogoutButton from "./LogoutBottom";
 import { useUserAuth } from "../context/UserAuthContext";
 import { FaPlus } from "react-icons/fa";
 
+import bolha from "../assets/img/bolha.png";
+import gamer from "../assets/img/gamer.png";
+import reino from "../assets/img/reino.png";
+import artista from "../assets/img/artista.png";
+
 const Recompensas = () => {
-  const navigate = useNavigate();
+
   const { user } = useUserAuth();
   const saldoBubbles = user?.pontos ?? 0;
 
@@ -17,26 +22,24 @@ const Recompensas = () => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 480);
     };
-
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const recompensasDisponiveis = [
-    { titulo: "Tema", descricao: "Castelo", pontos: 4000, icon: "🏰" },
-    { titulo: "Avatar", descricao: "Persona", pontos: 2000, icon: "👤" },
-    { titulo: "Moldura", descricao: "Quadro", pontos: 1000, icon: "🖼" },
-    { titulo: "Ícone", descricao: "Gamer", pontos: 3000, icon: "🎮" },
+    { titulo: "Bolha", pontos: 500, iconUrl: bolha },
+    { titulo: "Gamer", pontos: 3000, iconUrl: gamer },
+    { titulo: "Reino", pontos: 5000, iconUrl: reino },
+    { titulo: "Artista", pontos: 1500, iconUrl: artista },
   ];
 
   const recompensasObtidas = [
     {
       titulo: "Envio de Missões",
-      descricao: "Missões enviadas com sucesso",
       iconUrl: "https://cdn-icons-png.flaticon.com/512/190/190411.png",
     },
-    { titulo: "Postagem", descricao: "Texto liberado", icon: "📝" },
+    { titulo: "Postagem", icon: "📝" },
   ];
 
   const styles = {
@@ -104,18 +107,18 @@ const Recompensas = () => {
     card: {
       border: "2px solid #00AEEF",
       borderRadius: "16px",
-      padding: "8px",
+      padding: "10px",
       textAlign: "center",
       position: "relative",
       boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      gap: "6px",
+      gap: "8px",
       cursor: "pointer",
       userSelect: "none",
       transition: "transform 0.2s",
-      fontSize: isMobile ? "12px" : "14px",
+      fontSize: isMobile ? "14px" : "16px",
     },
     cardHover: {
       transform: "translateY(-3px)",
@@ -124,28 +127,23 @@ const Recompensas = () => {
       backgroundColor: "#00AEEF",
       color: "white",
       borderRadius: "16px",
-      padding: "8px",
+      padding: "10px",
       textAlign: "center",
       boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      gap: "6px",
-      fontSize: isMobile ? "12px" : "14px",
+      gap: "8px",
+      fontSize: isMobile ? "14px" : "16px",
     },
     titulo: {
       fontWeight: "600",
-      fontSize: isMobile ? "12px" : "14px",
-    },
-    descricao: {
-      fontSize: isMobile ? "10px" : "12px",
-      color: isMobile ? "#ddd" : "#eee",
-      textAlign: "center",
+      fontSize: isMobile ? "14px" : "16px",
     },
     pontos: {
       color: "#00AEEF",
       fontWeight: "bold",
-      fontSize: isMobile ? "11px" : "12px",
+      fontSize: isMobile ? "18px" : "20px",
       marginTop: "4px",
     },
     botaoMais: {
@@ -176,10 +174,10 @@ const Recompensas = () => {
       zIndex: 1000,
     },
     iconImage: {
-      width: isMobile ? 36 : 44,
-      height: isMobile ? 36 : 44,
+      width: isMobile ? 64 : 80,
+      height: isMobile ? 64 : 80,
       objectFit: "contain",
-      borderRadius: "8px",
+      borderRadius: "10px",
     },
   };
 
@@ -215,15 +213,17 @@ const Recompensas = () => {
                 ...styles.card,
                 ...(hoveredIndex === i ? styles.cardHover : {}),
               }}
-              title={`${item.titulo} - ${item.descricao}`}
+              title={`${item.titulo} - ${item.pontos} bubbles`}
               onMouseEnter={() => setHoveredIndex(i)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
-              <span role="img" aria-label={item.descricao} style={{ fontSize: isMobile ? 32 : 40 }}>
-                {item.icon}
-              </span>
+              <img
+                src={item.iconUrl}
+                alt={item.titulo}
+                style={styles.iconImage}
+              />
               <div style={styles.titulo}>{item.titulo}</div>
-              <div style={styles.descricao}>{item.descricao}</div>
+              {/* descrição removida conforme pedido */}
               <div style={styles.pontos}>{item.pontos} 🫧</div>
               <div style={styles.botaoMais}>
                 <FaPlus />
@@ -235,20 +235,27 @@ const Recompensas = () => {
         <h2 style={styles.sectionTitle}>Obtidas:</h2>
         <div style={styles.grid}>
           {recompensasObtidas.map((item, i) => (
-            <div key={i} style={styles.obtidaCard} title={`${item.titulo} - ${item.descricao}`}>
+            <div
+              key={i}
+              style={styles.obtidaCard}
+              title={item.titulo}
+            >
               {item.iconUrl ? (
                 <img
                   src={item.iconUrl}
-                  alt={item.descricao || item.titulo}
+                  alt={item.titulo}
                   style={styles.iconImage}
                 />
               ) : (
-                <span role="img" aria-label={item.descricao || item.titulo} style={{ fontSize: isMobile ? 32 : 40 }}>
+                <span
+                  role="img"
+                  aria-label={item.titulo}
+                  style={{ fontSize: isMobile ? 32 : 40 }}
+                >
                   {item.icon}
                 </span>
               )}
               <div style={styles.titulo}>{item.titulo}</div>
-              <div style={styles.descricao}>{item.descricao}</div>
             </div>
           ))}
         </div>
