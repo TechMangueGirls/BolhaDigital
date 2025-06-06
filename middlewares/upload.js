@@ -1,10 +1,8 @@
 const multer = require("multer");
 const path = require("path");
 
-// Extensões permitidas
 const extensoesPermitidas = [".png", ".jpg", ".jpeg", ".gif", ".webp"];
 
-// Filtro de arquivos para aceitar apenas imagens
 const fileFilter = (req, file, cb) => {
   const ext = path.extname(file.originalname).toLowerCase();
   if (extensoesPermitidas.includes(ext)) {
@@ -14,7 +12,6 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Configuração de armazenamento
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/");
@@ -26,12 +23,11 @@ const storage = multer.diskStorage({
   },
 });
 
-// Configuração final do multer
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
   limits: {
-    fileSize: 5 * 1024 * 1024, // Limite de 5MB
+    fileSize: 50 * 1024 * 1024, // 50MB por arquivo
   },
 });
 

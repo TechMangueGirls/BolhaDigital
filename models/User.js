@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'admin', 'moderator'],
     default: 'user',
   },
-  pontos: { type: Number, default: 0 }, 
+  pontos: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model('User', userSchema);

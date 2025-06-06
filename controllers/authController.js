@@ -34,6 +34,7 @@ exports.register = async (req, res) => {
     email,
     dob,
     password: passwordHash,
+    role: "user" 
   });
 
   try {
@@ -67,7 +68,8 @@ exports.login = async (req, res) => {
 
   try {
     const secret = process.env.SECRET;
-    const token = jwt.sign({ id: user._id }, secret);
+    // Inclui o role no token
+    const token = jwt.sign({ id: user._id, role: user.role }, secret);
 
     res.status(200).json({
       msg: 'Autenticação realizada com sucesso!',
@@ -78,7 +80,8 @@ exports.login = async (req, res) => {
         username: user.username,
         email: user.email,
         dob: user.dob,
-        pontos: user.pontos
+        pontos: user.pontos,
+        role: user.role  // inclui o role aqui
       }
     });
   } catch (err) {
@@ -93,10 +96,18 @@ exports.getUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: 'Usuário não encontrado!' });
     }
-    res.status(200).json({ user });
+    res.status(200).json({ 
+      user: {
+        _id: user._id,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        dob: user.dob,
+        pontos: user.pontos,
+        role: user.role 
+      }
+    });
   } catch (err) {
     res.status(500).json({ msg: 'Erro ao buscar usuário' });
   }
 };
-
-

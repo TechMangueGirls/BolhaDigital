@@ -44,6 +44,7 @@ connectDB();
 app.use(authRoutes);
 app.use(postRoutes);
 app.use(missaoRoutes);
+app.use('/api/missoes', missaoRoutes);
 
 // Inicialização do servidor
 const PORT = process.env.PORT || 5000;
