@@ -28,10 +28,6 @@ const Home = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    console.log("Usuário no Home:", user);
-  }, [user]);
-
   const styles = {
     missoesContainer: {
       paddingTop: isMobile ? "120px" : "80px",
