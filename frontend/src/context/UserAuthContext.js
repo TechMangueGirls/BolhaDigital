@@ -86,7 +86,7 @@ export function UserAuthContextProvider({ children }) {
     setToken(null);
   };
 
-  const resetPassword = (email) => {
+  const resetPassword = async (email) => {
     alert("Instruções de recuperação de senha enviadas para o seu e-mail.");
   };
 
@@ -110,7 +110,18 @@ export function UserAuthContextProvider({ children }) {
 
   return (
     <UserAuthContext.Provider
-      value={{ user, token, loading, error, signUp, logIn, logOut, resetPassword, refreshUserData }}
+      value={{
+        user,
+        setUser,  
+        token,
+        loading,
+        error,
+        signUp,
+        logIn,
+        logOut,
+        resetPassword,
+        refreshUserData,
+      }}
     >
       {children}
     </UserAuthContext.Provider>

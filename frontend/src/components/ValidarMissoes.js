@@ -5,6 +5,7 @@ function ValidarMissoes() {
   const { user, token } = useUserAuth();
   const [missoes, setMissoes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [imagemAmpliada, setImagemAmpliada] = useState(null); 
 
   useEffect(() => {
     if (!token) return;
@@ -46,6 +47,36 @@ function ValidarMissoes() {
     <div style={{ maxWidth: "700px", margin: "20px auto", fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }}>
       <h1 style={{ textAlign: "center", marginBottom: "20px" }}>Validar Missões</h1>
 
+      {imagemAmpliada && (
+        <div
+          onClick={() => setImagemAmpliada(null)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 9999,
+            cursor: "zoom-out",
+          }}
+        >
+          <img
+            src={imagemAmpliada}
+            alt="Imagem ampliada"
+            style={{
+              maxWidth: "90%",
+              maxHeight: "90%",
+              borderRadius: "10px",
+              boxShadow: "0 0 20px rgba(0,0,0,0.5)",
+            }}
+          />
+        </div>
+      )}
+
       {missoes.length === 0 ? (
         <p style={{ textAlign: "center" }}>Não há missões pendentes.</p>
       ) : (
@@ -71,8 +102,15 @@ function ValidarMissoes() {
                     key={idx}
                     src={`${process.env.REACT_APP_BACKEND_URL}/uploads/${img}`}
                     alt={`Missão ${missao.titulo} - imagem ${idx + 1}`}
-                    style={{ width: "220px", height: "140px", objectFit: "cover", borderRadius: "6px", border: "1px solid #ccc" }}
-
+                    style={{
+                      width: "220px",
+                      height: "140px",
+                      objectFit: "cover",
+                      borderRadius: "6px",
+                      border: "1px solid #ccc",
+                      cursor: "pointer"
+                    }}
+                    onClick={() => setImagemAmpliada(`${process.env.REACT_APP_BACKEND_URL}/uploads/${img}`)}
                   />
                 ))}
               </div>

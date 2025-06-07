@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import BottomNavigation from "./BottomNavigation";
 import LogoFixa from "./LogoFixa";
 import LogoutButton from "./LogoutBottom";
@@ -11,42 +10,118 @@ import gamer from "../assets/img/gamer.png";
 import reino from "../assets/img/reino.png";
 import artista from "../assets/img/artista.png";
 
-const Recompensas = () => {
+const todasRecompensas = [
+  { titulo: "Bolha", pontos: 500, iconUrl: bolha },
+  { titulo: "Gamer", pontos: 700, iconUrl: gamer },
+  { titulo: "Reino", pontos: 5000, iconUrl: reino },
+  { titulo: "Artista", pontos: 1500, iconUrl: artista },
+  { titulo: "Postagem de Vídeo", pontos: 20000, iconUrl: null, icon: "🎬" },
+  { titulo: "Postagem de Imagens", pontos: 10000, iconUrl: null, icon: "📸" },
+];
 
-  const { user } = useUserAuth();
+const recompensasPadrao = [
+  {
+    titulo: "Envio de Missões",
+    iconUrl: "https://cdn-icons-png.flaticon.com/512/190/190411.png",
+  },
+  { titulo: "Postagem", iconUrl: null, icon: "📝" },
+];
+
+const Recompensas = () => {
+  const { user, setUser } = useUserAuth();
   const saldoBubbles = user?.pontos ?? 0;
 
   const [isMobile, setIsMobile] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+
+  const [recompensasObtidas, setRecompensasObtidas] = useState([...recompensasPadrao]);
+  const [recompensasDisponiveis, setRecompensasDisponiveis] = useState(todasRecompensas);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 480);
+    const carregarRecompensas = async () => {
+      if (!user?._id) return;
+
+      try {
+        const res = await fetch(`http://localhost:5000/api/recompensas/${user._id}`);
+        const data = await res.json();
+
+        if (res.ok) {
+          const recompensasObtidasComIcones = data.obtidas.map(r => {
+            const recompensaLocal = todasRecompensas.find(tr => tr.titulo === r.titulo);
+            return {
+              ...r,
+              iconUrl: recompensaLocal?.iconUrl || null,
+              icon: recompensaLocal?.icon || r.icon || null,
+            };
+          });
+
+          const recompensasParaResgatar = data.paraResgatar.map(r => {
+            const recompensaLocal = todasRecompensas.find(tr => tr.titulo === r.titulo);
+            return {
+              ...r,
+              iconUrl: recompensaLocal?.iconUrl || null,
+              icon: recompensaLocal?.icon || r.icon || null,
+            };
+          });
+
+          setRecompensasObtidas([...recompensasPadrao, ...recompensasObtidasComIcones]);
+          setRecompensasDisponiveis(recompensasParaResgatar);
+        } else {
+          console.error("Erro ao buscar recompensas:", data.message);
+        }
+      } catch (error) {
+        console.error("Erro na requisição:", error);
+      }
     };
+
+    carregarRecompensas();
+  }, [user]);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 480);
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const recompensasDisponiveis = [
-    { titulo: "Bolha", pontos: 500, iconUrl: bolha },
-    { titulo: "Gamer", pontos: 3000, iconUrl: gamer },
-    { titulo: "Reino", pontos: 5000, iconUrl: reino },
-    { titulo: "Artista", pontos: 1500, iconUrl: artista },
-  ];
+  const handleResgatar = async (index) => {
+    const recompensa = recompensasDisponiveis[index];
 
-  const recompensasObtidas = [
-    {
-      titulo: "Envio de Missões",
-      iconUrl: "https://cdn-icons-png.flaticon.com/512/190/190411.png",
-    },
-    { titulo: "Postagem", icon: "📝" },
-  ];
+    if (saldoBubbles < recompensa.pontos) {
+      alert("Você não tem bubbles suficientes para resgatar essa recompensa.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/recompensas/obter/${user._id}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ titulo: recompensa.titulo }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || "Erro ao resgatar recompensa.");
+        return;
+      }
+
+      setUser(data.user);
+      alert("Recompensa obtida com sucesso!");
+    } catch (error) {
+      alert("Erro na comunicação com o servidor.");
+      console.error(error);
+    }
+  };
 
   const styles = {
     wrapper: {
       backgroundColor: "#fff",
       minHeight: "100vh",
-      paddingTop: isMobile ? "220px" : "260px",
+      paddingTop: isMobile ? "200px" : "350px", 
       paddingBottom: isMobile ? "80px" : "100px",
       boxSizing: "border-box",
       display: "flex",
@@ -61,7 +136,7 @@ const Recompensas = () => {
       padding: "0 10px",
       display: "flex",
       flexDirection: "column",
-      gap: "20px",
+      gap: "14px",
     },
     title: {
       textAlign: "center",
@@ -79,7 +154,7 @@ const Recompensas = () => {
       justifyContent: "space-between",
       alignItems: "center",
       fontSize: isMobile ? "14px" : "16px",
-      marginBottom: "20px",
+      marginBottom: "10px",
     },
     saldoBubble: {
       backgroundColor: "white",
@@ -96,13 +171,14 @@ const Recompensas = () => {
       fontSize: isMobile ? "18px" : "20px",
       fontWeight: "600",
       color: "#0579b2",
-      marginBottom: "12px",
+      marginTop: "10px",
+      marginBottom: "6px",
       textAlign: "center",
     },
     grid: {
       display: "grid",
       gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-      gap: "15px",
+      gap: "10px",
     },
     card: {
       border: "2px solid #00AEEF",
@@ -121,151 +197,121 @@ const Recompensas = () => {
       fontSize: isMobile ? "14px" : "16px",
     },
     cardHover: {
-      transform: "translateY(-3px)",
+      transform: "scale(1.07)",
     },
-    obtidaCard: {
-      backgroundColor: "#00AEEF",
+    cardObtida: {
+      backgroundColor: "#007aaf",
       color: "white",
-      borderRadius: "16px",
-      padding: "10px",
-      textAlign: "center",
-      boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      gap: "8px",
-      fontSize: isMobile ? "14px" : "16px",
+      border: "none",
     },
-    titulo: {
-      fontWeight: "600",
-      fontSize: isMobile ? "14px" : "16px",
+    icon: {
+      width: "50px",
+      height: "50px",
+      objectFit: "contain",
+    },
+    iconText: {
+      fontSize: "36px",
+      lineHeight: "1",
     },
     pontos: {
-      color: "#00AEEF",
       fontWeight: "bold",
-      fontSize: isMobile ? "18px" : "20px",
-      marginTop: "4px",
+      color: "#007aaf",
     },
-    botaoMais: {
-      position: "absolute",
-      top: "4px",
-      right: "4px",
-      backgroundColor: "#FFD700",
-      color: "#000",
-      borderRadius: "50%",
-      width: "20px",
-      height: "20px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      fontWeight: "bold",
-      fontSize: "14px",
+    button: {
+      backgroundColor: "#00AEEF",
+      border: "none",
+      borderRadius: "8px",
+      color: "white",
+      padding: "6px 10px",
       cursor: "pointer",
-      userSelect: "none",
-    },
-    footer: {
-      position: "fixed",
-      bottom: 0,
-      left: 0,
-      width: "100%",
-      backgroundColor: "white",
-      boxShadow: "0 -2px 8px rgba(0,0,0,0.1)",
-      paddingBottom: "env(safe-area-inset-bottom)",
-      zIndex: 1000,
-    },
-    iconImage: {
-      width: isMobile ? 64 : 80,
-      height: isMobile ? 64 : 80,
-      objectFit: "contain",
-      borderRadius: "10px",
+      fontWeight: "bold",
+      marginTop: "auto",
     },
   };
 
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-
   return (
-    <div style={styles.wrapper}>
-      <LogoFixa
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          zIndex: 1001,
-          marginBottom: "20px",
-        }}
-      />
+    <>
+      <LogoFixa />
+      <div style={styles.wrapper}>
+        <div style={styles.container}>
+          <div style={styles.saldoCard}>
+            <div>Saldo Bubbles:</div>
+            <div style={styles.saldoBubble}>
+              {saldoBubbles} <FaPlus />
+            </div>
+          </div>
 
-      <div style={styles.container}>
-        <h1 style={styles.title}>Recompensas</h1>
-
-        <div style={styles.saldoCard}>
-          <p>Conclua as missões para ganhar + bubbles e resgatar recompensas</p>
-          <div style={styles.saldoBubble}>🫧 {saldoBubbles}</div>
-        </div>
-
-        <h2 style={styles.sectionTitle}>Para resgatar:</h2>
-        <div style={styles.grid}>
-          {recompensasDisponiveis.map((item, i) => (
-            <div
-              key={i}
-              style={{
-                ...styles.card,
-                ...(hoveredIndex === i ? styles.cardHover : {}),
-              }}
-              title={`${item.titulo} - ${item.pontos} bubbles`}
-              onMouseEnter={() => setHoveredIndex(i)}
-              onMouseLeave={() => setHoveredIndex(null)}
-            >
-              <img
-                src={item.iconUrl}
-                alt={item.titulo}
-                style={styles.iconImage}
-              />
-              <div style={styles.titulo}>{item.titulo}</div>
-              {/* descrição removida conforme pedido */}
-              <div style={styles.pontos}>{item.pontos} 🫧</div>
-              <div style={styles.botaoMais}>
-                <FaPlus />
+          <div style={styles.sectionTitle}>Recompensas Obtidas</div>
+          <div style={styles.grid}>
+            {recompensasObtidas.map((recompensa, index) => (
+              <div
+                key={index}
+                style={{
+                  ...styles.card,
+                  ...styles.cardObtida,
+                  ...(hoveredIndex === index ? styles.cardHover : {}),
+                  cursor: "default",
+                }}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                {recompensa.iconUrl ? (
+                  <img
+                    src={recompensa.iconUrl}
+                    alt={recompensa.titulo}
+                    style={styles.icon}
+                  />
+                ) : (
+                  <div style={styles.iconText}>
+                    {recompensa.icon || "🏆"}
+                  </div>
+                )}
+                <div>{recompensa.titulo}</div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <h2 style={styles.sectionTitle}>Obtidas:</h2>
-        <div style={styles.grid}>
-          {recompensasObtidas.map((item, i) => (
-            <div
-              key={i}
-              style={styles.obtidaCard}
-              title={item.titulo}
-            >
-              {item.iconUrl ? (
-                <img
-                  src={item.iconUrl}
-                  alt={item.titulo}
-                  style={styles.iconImage}
-                />
-              ) : (
-                <span
-                  role="img"
-                  aria-label={item.titulo}
-                  style={{ fontSize: isMobile ? 32 : 40 }}
+          <div style={{ height: "24px" }}></div>
+
+          <div style={styles.sectionTitle}>Recompensas para Resgatar</div>
+          <div style={styles.grid}>
+            {recompensasDisponiveis.map((recompensa, index) => (
+              <div
+                key={index}
+                style={{
+                  ...styles.card,
+                  ...(hoveredIndex === index ? styles.cardHover : {}),
+                }}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                {recompensa.iconUrl ? (
+                  <img
+                    src={recompensa.iconUrl}
+                    alt={recompensa.titulo}
+                    style={styles.icon}
+                  />
+                ) : (
+                  <div style={styles.iconText}>
+                    {recompensa.icon || "🎁"}
+                  </div>
+                )}
+                <div>{recompensa.titulo}</div>
+                <div style={styles.pontos}>{recompensa.pontos} Bubbles</div>
+                <button
+                  style={styles.button}
+                  onClick={() => handleResgatar(index)}
                 >
-                  {item.icon}
-                </span>
-              )}
-              <div style={styles.titulo}>{item.titulo}</div>
-            </div>
-          ))}
+                  Resgatar
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-
-      <footer style={styles.footer}>
-        <BottomNavigation />
-        <LogoutButton />
-      </footer>
-    </div>
+      <BottomNavigation />
+      <LogoutButton />
+    </>
   );
 };
 
