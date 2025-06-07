@@ -1,4 +1,3 @@
-// models/User.js
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -13,7 +12,18 @@ const userSchema = new mongoose.Schema({
     default: 'user',
   },
   pontos: { type: Number, default: 0 },
+
+  recompensasObtidas: [
+    {
+      titulo: { type: String, required: true },
+      iconUrl: { type: String }, 
+    }
+  ],
+
+  avatarSelecionado: {
+    titulo: { type: String },
+    iconUrl: { type: String },
+  },
 });
 
 module.exports = mongoose.model('User', userSchema);
-
