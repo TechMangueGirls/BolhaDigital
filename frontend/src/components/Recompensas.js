@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import BottomNavigation from "./BottomNavigation";
 import LogoFixa from "./LogoFixa";
-import LogoutButton from "./LogoutBottom";
 import { useUserAuth } from "../context/UserAuthContext";
 import { FaPlus } from "react-icons/fa";
 
@@ -11,10 +10,10 @@ import reino from "../assets/img/reino.png";
 import artista from "../assets/img/artista.png";
 
 const todasRecompensas = [
-  { titulo: "Bolha", pontos: 500, iconUrl: bolha },
+  { titulo: "Bolha", pontos: 150, iconUrl: bolha },
   { titulo: "Gamer", pontos: 700, iconUrl: gamer },
-  { titulo: "Reino", pontos: 5000, iconUrl: reino },
-  { titulo: "Artista", pontos: 1500, iconUrl: artista },
+  { titulo: "Reino", pontos: 1000, iconUrl: reino },
+  { titulo: "Artista", pontos: 800, iconUrl: artista },
   { titulo: "Postagem de Vídeo", pontos: 20000, iconUrl: null, icon: "🎬" },
   { titulo: "Postagem de Imagens", pontos: 10000, iconUrl: null, icon: "📸" },
 ];
@@ -121,8 +120,8 @@ const Recompensas = () => {
     wrapper: {
       backgroundColor: "#fff",
       minHeight: "100vh",
-      paddingTop: isMobile ? "200px" : "350px", 
-      paddingBottom: isMobile ? "80px" : "100px",
+      paddingTop: isMobile ? "200px" : "380px", 
+      paddingBottom: isMobile ? "80px" : "50px",
       boxSizing: "border-box",
       display: "flex",
       flexDirection: "column",
@@ -310,7 +309,6 @@ const Recompensas = () => {
         </div>
       </div>
       <BottomNavigation />
-      <LogoutButton />
     </>
   );
 };

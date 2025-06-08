@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Form, Alert, Button } from "react-bootstrap";
+import { Form, Alert, Button, Spinner } from "react-bootstrap";
 import favicon from "../assets/favicon.png";
 import API_BASE_URL from "../api";
 
@@ -12,6 +12,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,6 +31,8 @@ const Signup = () => {
       setError("As senhas não coincidem.");
       return;
     }
+
+    setLoading(true);
 
     try {
       const res = await fetch(`${API_BASE_URL}/auth/register`, {
@@ -56,6 +59,8 @@ const Signup = () => {
       }
     } catch (err) {
       setError("Erro ao conectar com o servidor.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -85,7 +90,9 @@ const Signup = () => {
               type="text"
               placeholder="Nome e Sobrenome"
               onChange={(e) => setName(e.target.value)}
+              value={name}
               required
+              disabled={loading}
             />
           </Form.Group>
           <Form.Group className="mb-3">
@@ -93,7 +100,9 @@ const Signup = () => {
               type="text"
               placeholder="Nome de Usuário"
               onChange={(e) => setUsername(e.target.value)}
+              value={username}
               required
+              disabled={loading}
             />
           </Form.Group>
           <Form.Group className="mb-3">
@@ -101,14 +110,18 @@ const Signup = () => {
               type="email"
               placeholder="Email"
               onChange={(e) => setEmail(e.target.value)}
+              value={email}
               required
+              disabled={loading}
             />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Control
               type="date"
               onChange={(e) => setDob(e.target.value)}
+              value={dob}
               required
+              disabled={loading}
             />
           </Form.Group>
           <Form.Group className="mb-3">
@@ -116,7 +129,9 @@ const Signup = () => {
               type="password"
               placeholder="Senha"
               onChange={(e) => setPassword(e.target.value)}
+              value={password}
               required
+              disabled={loading}
             />
           </Form.Group>
           <Form.Group className="mb-3">
@@ -124,7 +139,9 @@ const Signup = () => {
               type="password"
               placeholder="Confirmar Senha"
               onChange={(e) => setConfirmPassword(e.target.value)}
+              value={confirmPassword}
               required
+              disabled={loading}
             />
           </Form.Group>
           <div className="d-grid gap-2">
@@ -136,8 +153,9 @@ const Signup = () => {
                 border: "none",
                 fontWeight: "bold",
               }}
+              disabled={loading}
             >
-              Cadastrar
+              {loading ? <Spinner size="sm" /> : "Cadastrar"}
             </Button>
           </div>
         </Form>
