@@ -91,17 +91,22 @@ export function UserAuthContextProvider({ children }) {
   };
 
   const refreshUserData = async () => {
-    if (!token) return;
+    const userId = localStorage.getItem("userId");
+    if (!token || !userId) return;
+
     try {
-      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/user/me`, {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/recompensas/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       const data = await res.json();
-      if (res.ok && data.user) {
-        setUser(data.user);
-        localStorage.setItem("user", JSON.stringify(data.user));
+
+      if (res.ok) {
+        setUser(data);
+        localStorage.setItem("user", JSON.stringify(data));
+      } else {
+        console.error("Erro ao buscar usuário atualizado:", data.message);
       }
     } catch (err) {
       console.error("Erro ao atualizar usuário:", err);
@@ -112,7 +117,7 @@ export function UserAuthContextProvider({ children }) {
     <UserAuthContext.Provider
       value={{
         user,
-        setUser,  
+        setUser,
         token,
         loading,
         error,
