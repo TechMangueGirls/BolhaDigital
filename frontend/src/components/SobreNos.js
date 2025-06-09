@@ -10,7 +10,7 @@ const styles = {
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     maxWidth: 900,
     margin: '0 auto',
-    padding: '15px 20px',
+    padding: '80px 20px 20px',
     color: '#333',
     lineHeight: 1.5,
   },
@@ -33,56 +33,57 @@ const styles = {
   teamMembers: {
     display: 'flex',
     justifyContent: 'center',
-    gap: 20,
+    gap: 10,
   },
   teamMemberCard: {
     backgroundColor: '#f8faff',
     borderRadius: 8,
     boxShadow: '0 1px 6px rgba(0,0,0,0.1)',
-    padding: 15,
+    padding: 10,
     textAlign: 'center',
-    width: 220,
+    width: 180,
   },
-  memberPhoto: {
-    width: 110,
-    height: 110,
-    borderRadius: '50%',
-    objectFit: 'cover',
-    marginBottom: 12,
-    border: '3px solid #035f8d',
-  },
-  memberPhotoGaby: {
-    width: 110,
-    height: 110,
-    borderRadius: '50%',
-    objectFit: 'cover',
-    objectPosition: '50%',
-    marginBottom: 12,
-    border: '3px solid #035f8d',
-  },
+   memberPhoto: {
+  width: 80,
+  height: 80,
+  borderRadius: '50%',
+  objectFit: 'cover',
+  objectPosition: 'center 40%',
+  marginBottom: 10,
+  border: '2px solid #035f8d',
+},
+memberPhotoGaby: {
+  width: 80,
+  height: 80,
+  borderRadius: '50%',
+  objectFit: 'cover',
+  objectPosition: 'center 30%', 
+  marginBottom: 10,
+  border: '2px solid #035f8d',
+},
   memberName: {
-    fontSize: 18,
+    fontSize: 16,
     marginBottom: 4,
     color: '#02476b',
   },
   memberRole: {
     fontStyle: 'italic',
-    fontSize: 14,
-    marginBottom: 10,
+    fontSize: 13,
+    marginBottom: 8,
     color: '#555',
   },
   memberBio: {
-    fontSize: 16,
+    fontSize: 14,
   },
   linkIcon: {
     color: '#035f8d',
-    margin: '0 5px',
+    margin: '0 4px',
     textDecoration: 'none',
   },
   sectionContent: {
-    fontSize: 16,
-    marginBottom: 12,
-    color: '#444',
+    fontSize: 18,
+    marginBottom: 14,
+    color: '#333',
   },
   footer: {
     marginTop: 40,
@@ -104,7 +105,7 @@ const styles = {
     },
     teamMemberCard: {
       width: '90%',
-      maxWidth: 320,
+      maxWidth: 300,
     },
   },
 };
@@ -115,7 +116,7 @@ const SobreNos = () => {
       <h1 style={styles.title}>Sobre Nós</h1>
 
       <section style={styles.section}>
-        <h2 style={styles.sectionHeading}>Conheça as fundadoras</h2>
+        <h2 style={styles.sectionHeading}>Por trás da bolha: conheça as fundadoras</h2>
         <div style={styles.teamMembers}>
           {[{
             photo: AnaPhoto,
@@ -163,14 +164,14 @@ const SobreNos = () => {
       <section style={styles.section}>
         <h2 style={styles.sectionHeading}>Nossa História</h2>
         <p style={styles.sectionContent}>
-          Fundada em 2025, a TechMangueGirls une tecnologia e cultura, fortalecendo a presença feminina na tecnologia.
+          TechMangueGirls, fundada em 2025 e inspirada no Manguebeat, une cultura, tecnologia e representatividade feminina.
         </p>
       </section>
 
       <section style={styles.section}>
         <h2 style={styles.sectionHeading}>Nossa Missão</h2>
         <p style={styles.sectionContent}>
-          Criar espaços digitais positivos com respeito, empatia e colaboração no centro.
+         Criamos espaços digitais baseados em respeito e empatia, promovendo bem-estar, impacto social e uso responsável da tecnologia.
         </p>
       </section>
 
