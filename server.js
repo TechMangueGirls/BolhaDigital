@@ -12,7 +12,7 @@ const recompensasRoutes = require('./routes/recompensasRoutes');
 
 const app = express();
 
-// *** Garantir que a pasta uploads existe ***
+// Garante que a pasta uploads existe
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
@@ -21,16 +21,14 @@ if (!fs.existsSync(uploadDir)) {
   console.log('Pasta uploads/ já existe.');
 }
 
-// Domínios permitidos para CORS
+// CORS configurado 
 const allowedOrigins = [
   'https://bolha-digital1.onrender.com',
   'http://localhost:3000',
 ];
 
-// Configurações CORS
 const corsOptions = {
   origin: function (origin, callback) {
-    // Permite requests sem origem (como postman, curl) ou da lista permitida
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -42,14 +40,13 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
-// Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Expor pasta uploads como estática para servir arquivos enviados
+// Serve arquivos enviados em /uploads
 app.use('/uploads', express.static(uploadDir));
 
-// Conexão com o banco de dados MongoDB
+// Conecta ao banco MongoDB
 connectDB();
 
 // Rotas da aplicação
@@ -58,6 +55,6 @@ app.use(postRoutes);
 app.use('/api/missoes', missaoRoutes);
 app.use('/api/recompensas', recompensasRoutes);
 
-// Inicialização do servidor na porta definida no .env ou 5000
+// Inicializa o servidor
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
