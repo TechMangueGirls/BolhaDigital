@@ -1,0 +1,365 @@
+/* src/components/Sobre.css */
+
+/* --------------------------------------------------- */
+/* Reset básico e box-sizing para evitar problemas de largura/altura */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #035f8d; /* Fundo azul claro para a "tela" principal */
+  color: #333;
+  overflow: hidden; /* Evita scroll na página inteira no desktop */
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* --------------------------------------------------- */
+/* Estilos para o container principal */
+.sobre-nos-container {
+  height: 100vh;               /* Ocupa toda altura da viewport */
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 30px 20px 40px 20px; /* padding interno para espaço confortável */
+  background-color: #ffffff;    /* Fundo branco puro para o container principal "Sobre Nós" */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-y: scroll;           /* Scroll vertical sempre ativo */
+  display: flex;
+  flex-direction: column;
+
+  /* Scrollbar invisível */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE e Edge */
+}
+.sobre-nos-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari e Opera */
+}
+
+/* --------------------------------------------------- */
+/* Logo da Bolha Digital - centralizada */
+.logo-bolha-digital-wrapper {
+  text-align: center;
+  margin-top: 0;        /* Removido margem grande para não cortar no topo */
+  margin-bottom: 20px;
+  padding-left: 0;
+}
+
+.logo-bolha-digital {
+  max-width: 200px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* --------------------------------------------------- */
+/* Título principal */
+.sobre-nos-title {
+  text-align: center;
+  color: #2c3e50;
+  font-size: 2.8em;
+  margin-top: 0;          /* Sem margem para evitar corte */
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.sobre-nos-title::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  background-color: #035f8d;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------- */
+/* Seções internas */
+.sobre-nos-section {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #fff;
+  border-left: 5px solid #5f235d;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.section-heading {
+  color: #035f8d;
+  font-size: 1.8em;
+  margin-top: 0;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.section-content {
+  font-size: 1.1em;
+  margin-bottom: 15px;
+  text-align: justify;
+}
+
+.values-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+}
+
+.values-list li {
+  background-color: #e9f5ff;
+  margin-bottom: 8px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border-left: 3px solid #5f235d;
+  font-size: 1.05em;
+}
+
+.values-list li strong {
+  color: #5f235d;
+}
+
+/* --------------------------------------------------- */
+/* Seção da equipe */
+.team-section {
+  text-align: center;
+}
+
+.team-members {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.team-member-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 250px;
+  text-align: center;
+}
+
+.member-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 30%;
+  margin-bottom: 15px;
+  border: 4px solid #5f235d;
+}
+
+.member-photo-ana {
+  object-position: center 10%;
+}
+
+.member-name {
+  font-size: 1.4em;
+  color: #2c3e50;
+  margin-bottom: 5px;
+}
+
+.member-role {
+  color: #666;
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+
+.member-bio {
+  font-size: 0.95em;
+  color: #555;
+}
+
+/* --------------------------------------------------- */
+/* Seção de Fundadores (se usar) */
+.fundadores-section {
+  background-color: #e6f0fa;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.fundadores-titulo {
+  color: #007bff;
+  font-size: 2.8em;
+  font-weight: bold;
+  margin-bottom: 50px;
+}
+
+.fundadores-cards-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.fundador-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  margin: 15px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 280px;
+  flex-shrink: 0;
+  transition: transform 0.3s ease-in-out;
+}
+
+.fundador-card:hover {
+  transform: translateY(-8px);
+}
+
+.fundador-imagem-wrapper {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 20px;
+  border: 4px solid #007bff;
+  background-color: #f0f0f0;
+  flex-shrink: 0;
+}
+
+.fundador-imagem {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 50%;
+}
+
+.decoracao-superior-esquerda {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  width: 60px;
+  height: 60px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  opacity: 0.8;
+  z-index: 1;
+}
+
+.decoracao-inferior-direita {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 70px;
+  height: 70px;
+  background-color: #6cbf4d;
+  border-radius: 50%;
+  opacity: 0.8;
+  z-index: 1;
+}
+
+.fundador-nome {
+  font-size: 1.6em;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 5px;
+}
+
+.fundador-cargo {
+  font-size: 1.1em;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.fundador-redes-sociais {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.social-icon {
+  color: #007bff;
+  font-size: 1.8em;
+  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.social-icon:hover {
+  color: #0056b3;
+  transform: scale(1.1);
+}
+
+/* --------------------------------------------------- */
+/* Footer */
+.sobre-nos-footer {
+  text-align: center;
+  padding: 20px;
+  margin-top: auto; /* Para empurrar o footer para o final se flex for usado */
+  background-color: #f8f8f8;
+  color: #555;
+  font-size: 0.85em;
+  border-top: 1px solid #eee;
+}
+
+/* --------------------------------------------------- */
+/* Responsividade Geral */
+@media (max-width: 768px) {
+  html, body {
+    overflow: auto; /* Permite scroll normal no mobile */
+  }
+
+  .sobre-nos-container {
+    height: auto;          /* Altura adaptável para telas menores */
+    max-width: 95%;
+    padding: 20px 15px 30px 15px;
+    margin-top: 10px;      /* Espaço para não cortar no topo */
+    margin-bottom: 10px;
+  }
+
+  .sobre-nos-title {
+    font-size: 2em;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  .section-heading {
+    font-size: 1.5em;
+  }
+
+  .logo-bolha-digital-wrapper {
+    text-align: center;
+    padding-left: 0;
+  }
+
+  .logo-bolha-digital {
+    max-width: 150px;
+  }
+
+  .team-member-card {
+    width: 100%;
+  }
+
+  .fundadores-titulo {
+    font-size: 2.2em;
+  }
+
+  .fundadores-cards-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .fundador-card {
+    width: 90%;
+    max-width: 300px;
+  }
+}

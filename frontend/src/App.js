@@ -2,6 +2,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 
+/* Páginas & componentes */
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
@@ -14,27 +15,32 @@ import Perfil from "./components/Perfil";
 import Welcome from "./components/Welcome";
 import MissoesDiarias from "./components/MissoesDiarias";
 import Recompensas from "./components/Recompensas";
+import SobreNos from "./components/SobreNos";       
+import "./components/Sobre.css";                    
 
+/* Missões */
 import MissaoDia from "./missoes/MissaoDia";
 import MissaoArte from "./missoes/MissaoArte";
 import MissaoMusica from "./missoes/MissaoMusica";
 import MissaoFilme from "./missoes/MissaoFilme";
-import ValidarMissoes from "./components/ValidarMissoes"; 
+import ValidarMissoes from "./components/ValidarMissoes";
 
 function App() {
   return (
     <UserAuthContextProvider>
-      <Container style={{ width: "400px" }}>
+      <Container style={{ width: "100%" }}>
         <Row>
           <Col>
             <Routes>
+      
               <Route path="/" element={<Welcome />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
-
+              <Route path="/sobrenos" element={<SobreNos />} />  
+        
               <Route
                 path="/home"
-                element={
+              element={
                   <ProtectedRoute>
                     <Home />
                   </ProtectedRoute>
@@ -112,9 +118,8 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              
               <Route
-                path="/validar-missoes" 
+                path="/validar-missoes"
                 element={
                   <ProtectedRoute>
                     <ValidarMissoes />

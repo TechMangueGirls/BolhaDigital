@@ -24,26 +24,18 @@ const Welcome = () => {
         .welcome-container {
           flex-grow: 1;
           display: flex;
+          flex-direction: column;
           justify-content: center;
           align-items: center;
-          gap: 40px;
           padding: 30px 10px;
-          flex-wrap: wrap;
-          max-width: 1100px;
+          max-width: 800px;
           margin: 0 auto;
-        }
-        .welcome-left, .welcome-right {
-          flex: 1 1 400px;
-          max-width: 500px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
+          gap: 24px;
         }
         .welcome-logo {
           width: 180px;
           height: 120px;
-          margin-bottom: 24px;
+          margin-bottom: 16px;
           object-fit: contain;
         }
         .welcome-main-text {
@@ -52,7 +44,7 @@ const Welcome = () => {
           margin-bottom: 12px;
           line-height: 1.3;
           color: #024a86;
-          max-width: 320px;
+          text-align: center;
         }
         .welcome-button {
           background-color: #0579b2;
@@ -76,8 +68,7 @@ const Welcome = () => {
           font-size: 1.1rem;
           font-weight: 600;
           color: #024a86;
-          margin-bottom: 16px;
-          max-width: 320px;
+          text-align: center;
         }
         .video-thumbnail {
           position: relative;
@@ -128,17 +119,14 @@ const Welcome = () => {
           padding: 15px 0;
           user-select: none;
         }
-        footer a {
+        footer span {
           color: #0579b2;
           text-decoration: underline;
+          cursor: pointer;
         }
         @media (max-width: 768px) {
           .welcome-container {
-            flex-direction: column;
             padding: 40px 16px 20px;
-          }
-          .welcome-left, .welcome-right {
-            max-width: 100%;
           }
           .welcome-main-text,
           .info-text {
@@ -155,42 +143,34 @@ const Welcome = () => {
 
       <div className="welcome-wrapper">
         <div className="welcome-container">
-          <div className="welcome-left">
-            <img src={logo} alt="Logo" className="welcome-logo" />
-            <p className="welcome-main-text">O lugar que garante a sua segurança virtual.</p>
-            <button className="welcome-button" onClick={() => navigate("/login")}>
-              Iniciar Sessão
-            </button>
-          </div>
+          <img src={logo} alt="Logo" className="welcome-logo" />
+          <p className="welcome-main-text">O lugar que garante a sua segurança virtual.</p>
+          <button className="welcome-button" onClick={() => navigate("/login")}>
+            Iniciar Sessão
+          </button>
 
-          <div className="welcome-right">
-            <p className="info-text">Para mais informações assista ao nosso vídeo.</p>
-            <a
-              href="https://youtu.be/qhnsUwyxJrk"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="video-thumbnail"
-            >
-              <img
-                src="https://img.youtube.com/vi/qhnsUwyxJrk/hqdefault.jpg"
-                alt="Capa do vídeo"
-              />
-              <button className="play-button">▶</button>
-            </a>
-          </div>
+          <p className="info-text">Para mais informações assista ao nosso vídeo.</p>
+          <a
+            href="https://youtu.be/qhnsUwyxJrk"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="video-thumbnail"
+          >
+            <img
+              src="https://img.youtube.com/vi/qhnsUwyxJrk/hqdefault.jpg"
+              alt="Capa do vídeo"
+            />
+            <button className="play-button">▶</button>
+          </a>
         </div>
 
         <footer>
           © {new Date().getFullYear()} Bolha Digital. Todos os direitos reservados.
           <p>
             Criado por{" "}
-            <a
-              href="https://github.com/luanabernardo/Bolha-Digital"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <span onClick={() => navigate("/sobrenos")}>
               TechMangueGirls
-            </a>
+            </span>
           </p>
         </footer>
       </div>
