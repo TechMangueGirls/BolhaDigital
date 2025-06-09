@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); 
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
     default: 'user',
   },
   pontos: { type: Number, default: 0 },
+  bio: { type: String, default: '' }, 
 
   recompensasObtidas: [
     {

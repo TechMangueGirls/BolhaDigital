@@ -10,6 +10,7 @@ const postRoutes = require('./routes/postRoutes');
 const missaoRoutes = require('./routes/missaoRoutes');
 const recompensasRoutes = require('./routes/recompensasRoutes');
 const votacaoRoutes = require('./routes/votacaoRoutes');
+const bioRoutes = require('./routes/bioRoutes');
 
 const { criarFrasesIniciais } = require('./controllers/voteController');
 
@@ -64,6 +65,7 @@ async function startServer() {
     app.use('/api/missoes', missaoRoutes);
     app.use('/api/recompensas', recompensasRoutes);
     app.use('/api/votacoes', votacaoRoutes);
+    app.use('/api/bio', bioRoutes);
 
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
