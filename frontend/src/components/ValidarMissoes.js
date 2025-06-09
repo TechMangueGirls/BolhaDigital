@@ -100,7 +100,7 @@ function ValidarMissoes() {
                 {missao.imagens && missao.imagens.map((img, idx) => (
                   <img
                     key={idx}
-                    src={`${process.env.REACT_APP_BACKEND_URL}/uploads/${img}`}
+                    src={img.base64} // Usando base64 direto do backend
                     alt={`Missão ${missao.titulo} - imagem ${idx + 1}`}
                     style={{
                       width: "220px",
@@ -110,7 +110,7 @@ function ValidarMissoes() {
                       border: "1px solid #ccc",
                       cursor: "pointer"
                     }}
-                    onClick={() => setImagemAmpliada(`${process.env.REACT_APP_BACKEND_URL}/uploads/${img}`)}
+                    onClick={() => setImagemAmpliada(img.base64)}
                   />
                 ))}
               </div>

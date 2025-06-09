@@ -12,8 +12,10 @@ const MissaoDia = () => {
   const [statusMsg, setStatusMsg] = useState("");
   const [enviando, setEnviando] = useState(false);
 
+  // Pega arquivos reais, não base64
   const handleFileChange = (e) => {
-    setImagens(Array.from(e.target.files));
+    const files = Array.from(e.target.files);
+    setImagens(files);
   };
 
   const handleSubmit = async (e) => {
@@ -32,20 +34,22 @@ const MissaoDia = () => {
     setEnviando(true);
     setStatusMsg("");
 
-    const formData = new FormData();
-    formData.append("titulo", titulo);
-    imagens.forEach((imagem) => {
-      formData.append("imagens", imagem);
-    });
-
     try {
+      const formData = new FormData();
+      formData.append("titulo", titulo);
+
+      imagens.forEach((file) => {
+        formData.append("imagens", file); // deve bater com o backend multer
+      });
+
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/missoes/enviar`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
+          // NÃO setar Content-Type para FormData
         },
         body: formData,
-        credentials: "include", // igual ao login
+        credentials: "include",
       });
 
       const data = await response.json();
@@ -53,6 +57,8 @@ const MissaoDia = () => {
       if (response.ok) {
         setStatusMsg("Missão enviada com sucesso! Aguarde aprovação do admin.");
         setImagens([]);
+        // limpa input do arquivo
+        document.getElementById("fileInput").value = "";
       } else {
         setStatusMsg(data.mensagem || "Erro ao enviar missão.");
       }
@@ -97,7 +103,14 @@ const MissaoDia = () => {
           <label htmlFor="fileInput" style={{ display: "block", color: "#0579b2", fontWeight: "bold", fontSize: 14, marginBottom: 8 }}>
             Selecione as imagens da missão:
           </label>
-          <input id="fileInput" type="file" accept="image/*" multiple onChange={handleFileChange} style={{ display: "none" }} />
+          <input
+            id="fileInput"
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleFileChange}
+            style={{ display: "none" }}
+          />
           <button
             type="button"
             onClick={() => document.getElementById("fileInput").click()}
