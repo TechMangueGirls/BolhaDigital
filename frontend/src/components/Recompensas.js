@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import BottomNavigation from "./BottomNavigation";
-import LogoFixa from "./LogoFixa";
 import { useUserAuth } from "../context/UserAuthContext";
 import { FaPlus } from "react-icons/fa";
 
@@ -234,7 +233,6 @@ const Recompensas = () => {
 
   return (
     <>
-      <LogoFixa />
       <div style={styles.wrapper}>
         <div style={styles.container}>
           <div style={styles.saldoCard}>

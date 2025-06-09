@@ -8,7 +8,6 @@ import { FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa";
 
 const Perfil = () => {
   const { user, refreshUserData, token } = useUserAuth();
-
   const [posts, setPosts] = useState([]);
   const [editingPostId, setEditingPostId] = useState(null);
   const [editingContent, setEditingContent] = useState("");
@@ -16,6 +15,40 @@ const Perfil = () => {
   const [showAvatarOptions, setShowAvatarOptions] = useState(false);
   const [recompensasObtidas, setRecompensasObtidas] = useState([]);
   const [loadingAvatarId, setLoadingAvatarId] = useState(null);
+  const [bio, setBio] = useState("");
+  const [editingBio, setEditingBio] = useState(false);
+  const [savingBio, setSavingBio] = useState(false);
+
+  const fetchUserBio = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/bio`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json();
+      if (response.ok && data.bio) setBio(data.bio);
+    } catch (err) {
+      console.error("Erro ao buscar bio:", err);
+    }
+  };
+
+  const saveUserBio = async () => {
+    setSavingBio(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/bio`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ bio }),
+      });
+      if (response.ok) setEditingBio(false);
+    } catch (err) {
+      console.error("Erro ao salvar bio:", err);
+    } finally {
+      setSavingBio(false);
+    }
+  };
 
   const fetchUserPosts = useCallback(async () => {
     if (!user?._id) return;
@@ -57,6 +90,7 @@ const Perfil = () => {
       refreshUserData();
       fetchUserPosts();
       fetchRecompensasObtidas();
+      fetchUserBio();
     }
   }, [user, refreshUserData, fetchUserPosts, fetchRecompensasObtidas]);
 
@@ -153,105 +187,118 @@ const Perfil = () => {
 
   if (!user) return <div>Carregando...</div>;
 
-  const avatar =
-    user.avatarSelecionado?.iconUrl ? (
-      <img
-        src={normalizeIconUrl(user.avatarSelecionado.iconUrl, user.avatarSelecionado.titulo)}
-        alt="Avatar"
-        style={{ width: 80, height: 80, borderRadius: "50%" }}
-      />
-    ) : (
-      <span style={{ fontSize: 32, color: "#fff", fontWeight: "bold" }}>
-        {user.name?.charAt(0)?.toUpperCase() || "?"}
-      </span>
-    );
+  const avatar = user.avatarSelecionado?.iconUrl ? (
+    <img
+      src={normalizeIconUrl(user.avatarSelecionado.iconUrl, user.avatarSelecionado.titulo)}
+      alt="Avatar"
+      style={{ width: 120, height: 120, borderRadius: "50%" }}
+    />
+  ) : (
+    <span style={{ fontSize: 42, color: "#fff", fontWeight: "bold" }}>
+      {user.name?.charAt(0)?.toUpperCase() || "?"}
+    </span>
+  );
 
   return (
-    <div className="perfil-container" style={{ paddingBottom: 70 }}>
+    <div style={{
+      padding: "24px 16px 90px",
+      maxWidth: 600,
+      margin: "0 auto",
+      fontFamily: "'Segoe UI', sans-serif",
+      backgroundColor: "#fff",
+    }}>
       <LogoFixa />
-      <header style={{ textAlign: "center", margin: "20px 0" }}>
-        <h2 style={{ color: "#0579b2" }}>Perfil</h2>
+      <header style={{ textAlign: "center", marginBottom: 24 }}>
+        <h2 style={{ color: "#0579b2", fontSize: 24 }}>Perfil</h2>
       </header>
 
-      <div style={{ display: "flex", justifyContent: "center", position: "relative", marginBottom: 16 }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 16 }}>
         <div
           onClick={handleAvatarClick}
           style={{
-            width: 80,
-            height: 80,
+            width: 120,
+            height: 120,
             borderRadius: "50%",
             backgroundColor: "#8a2be2",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: 32,
+            fontSize: 42,
             color: "#fff",
             fontWeight: "bold",
             cursor: "pointer",
             overflow: "hidden",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
           }}
         >
           {avatar}
         </div>
 
-        {showAvatarOptions && (
-          <div
-            style={{
-              position: "absolute",
-              top: 90,
-              backgroundColor: "#fff",
-              border: "1px solid #ccc",
-              borderRadius: 8,
-              padding: 10,
-              display: "flex",
-              gap: 10,
-              flexWrap: "wrap",
-              zIndex: 10,
-              maxWidth: 300,
-              boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-            }}
-          >
-            {recompensasObtidas.map((r) => (
-              <button
-                key={r.titulo}
-                onClick={() => handleAvatarSelect(r.titulo)}
-                disabled={loadingAvatarId !== null}
+        <h2 style={{ marginTop: 12, marginBottom: 4, fontSize: 22 }}>{user.name}</h2>
+        <p style={{ margin: 0, color: "#666", fontSize: 16 }}>@{user.username}</p>
+
+        <div style={{ marginTop: 8, textAlign: "center", fontSize: 16, color: "#444" }}>
+          <strong>Bio:</strong>{" "}
+          {editingBio ? (
+            <>
+              <textarea
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                rows={3}
                 style={{
-                  width: 40,
-                  height: 40,
-                  padding: 0,
-                  background: "none",
-                  border: "none",
-                  cursor: loadingAvatarId === null ? "pointer" : "default",
-                  borderRadius: "50%",
-                  overflow: "hidden",
+                  width: "90%",
+                  borderRadius: 8,
+                  padding: 8,
+                  fontSize: 14,
+                  border: "1px solid #ccc",
+                  marginTop: 6,
                 }}
-                title={r.titulo}
-              >
-                {loadingAvatarId === r.titulo ? (
-                  <div className="spinner" />
-                ) : (
-                  <img
-                    src={normalizeIconUrl(r.iconUrl, r.titulo)}
-                    alt={r.titulo}
-                    style={{ width: 40, height: 40, objectFit: "contain" }}
-                  />
-                )}
-              </button>
-            ))}
-          </div>
-        )}
+              />
+              <FaSave
+                onClick={saveUserBio}
+                style={{
+                  marginLeft: 10,
+                  cursor: savingBio ? "not-allowed" : "pointer",
+                  color: savingBio ? "gray" : "green",
+                }}
+                title="Salvar Bio"
+              />
+            </>
+          ) : (
+            <>
+              <span>{bio || "Sem bio ainda."}</span>
+              <FaEdit
+                onClick={() => setEditingBio(true)}
+                style={{ marginLeft: 10, cursor: "pointer", color: "#0579b2" }}
+                title="Editar Bio"
+              />
+            </>
+          )}
+        </div>
+
+        <div style={{
+          marginTop: 10,
+          backgroundColor: "#0579b2",
+          padding: "6px 14px",
+          borderRadius: 20,
+          color: "#fff",
+          fontSize: 16,
+          fontWeight: 500,
+        }}>
+          {user.pontos ?? 0} Bubbles 🫧
+        </div>
       </div>
 
-      <div style={{ textAlign: "center", marginBottom: 20 }}>
-        <p><strong>Nome:</strong> {user.name}</p>
-        <p><strong>Usuário:</strong> @{user.username}</p>
-        <p><strong>Bubbles:</strong> {user.pontos ?? 0} 🫧</p>
-      </div>
+      <div style={{ padding: "0 8px" }}>
+        <h3 style={{
+          color: "#0579b2",
+          textAlign: "center",
+          marginBottom: 16,
+          fontSize: 20,
+          fontWeight: 600,
+        }}>Minhas Postagens</h3>
 
-      <div style={{ padding: "0 16px" }}>
-        <h3 style={{ color: "#0579b2", textAlign: "center", marginBottom: 10 }}>Minhas Postagens</h3>
-        <div style={{ maxHeight: "45vh", overflowY: "auto", paddingRight: 8 }}>
+        <div style={{ maxHeight: "45vh", overflowY: "auto", paddingRight: 6 }}>
           {posts.length === 0 ? (
             <p style={{ textAlign: "center", color: "#666" }}>Você ainda não postou nada.</p>
           ) : (
@@ -259,15 +306,16 @@ const Perfil = () => {
               <div
                 key={post._id}
                 style={{
-                  border: "1px solid #0579b2",
-                  borderRadius: 10,
-                  padding: 8,
-                  marginBottom: 8,
-                  backgroundColor: "#f0f8ff",
+                  border: "1px solid #e0e0e0",
+                  borderRadius: 12,
+                  padding: 12,
+                  marginBottom: 10,
+                  backgroundColor: "#f9fbff",
+                  boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
                   position: "relative",
                 }}
               >
-                <div style={{ fontSize: 12, color: "#555", marginBottom: 4 }}>
+                <div style={{ fontSize: 14, color: "#555", marginBottom: 6 }}>
                   {formatDateTime(post.createdAt)}
                 </div>
 
@@ -276,20 +324,26 @@ const Perfil = () => {
                     value={editingContent}
                     onChange={(e) => setEditingContent(e.target.value)}
                     rows={3}
-                    style={{ width: "100%", borderRadius: 6, padding: 6, fontSize: 14 }}
+                    style={{
+                      width: "100%",
+                      borderRadius: 8,
+                      padding: 6,
+                      fontSize: 14,
+                      border: "1px solid #ccc",
+                    }}
                   />
                 ) : (
-                  <p style={{ whiteSpace: "pre-wrap", margin: 0 }}>{post.content}</p>
+                  <p style={{ whiteSpace: "pre-wrap", margin: 0, fontSize: 16 }}>{post.content}</p>
                 )}
 
                 <div
                   style={{
                     position: "absolute",
-                    top: 8,
-                    right: 8,
+                    top: 10,
+                    right: 10,
                     display: "flex",
-                    gap: 8,
-                    fontSize: 14,
+                    gap: 12,
+                    fontSize: 16,
                     color: "#0579b2",
                     cursor: "pointer",
                   }}
