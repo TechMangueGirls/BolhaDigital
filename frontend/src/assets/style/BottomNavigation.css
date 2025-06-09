@@ -1,0 +1,26 @@
+.bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.nav-icon {
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+}
+
+.icon-image {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
