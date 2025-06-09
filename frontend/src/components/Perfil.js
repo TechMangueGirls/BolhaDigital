@@ -8,6 +8,7 @@ import { FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa";
 
 const Perfil = () => {
   const { user, refreshUserData, token } = useUserAuth();
+
   const [posts, setPosts] = useState([]);
   const [editingPostId, setEditingPostId] = useState(null);
   const [editingContent, setEditingContent] = useState("");
@@ -77,8 +78,6 @@ const Perfil = () => {
       const data = await response.json();
       if (response.ok) {
         setRecompensasObtidas(data.obtidas || []);
-      } else {
-        console.error("Erro na resposta recompensas:", data.message || data);
       }
     } catch (err) {
       console.error("Erro ao buscar recompensas:", err);
@@ -126,11 +125,11 @@ const Perfil = () => {
         },
         body: JSON.stringify({ content: editingContent }),
       });
-      const data = await response.json();
       if (response.ok) {
         cancelEditing();
         fetchUserPosts();
       } else {
+        const data = await response.json();
         setError(data.msg || "Erro ao salvar");
       }
     } catch (err) {
@@ -169,9 +168,6 @@ const Perfil = () => {
       if (response.ok) {
         await refreshUserData();
         setShowAvatarOptions(false);
-      } else {
-        const errorData = await response.json();
-        alert("Erro ao mudar avatar: " + (errorData.message || "Erro desconhecido"));
       }
     } catch (err) {
       alert("Erro ao mudar avatar: " + err.message);
@@ -181,8 +177,7 @@ const Perfil = () => {
 
   const normalizeIconUrl = (iconUrl, titulo) => {
     if (!iconUrl) return `/assets/img/${titulo.toLowerCase()}.png`;
-    if (iconUrl.startsWith("/")) return iconUrl;
-    return `/assets/img/${titulo.toLowerCase()}.png`;
+    return iconUrl.startsWith("/") ? iconUrl : `/assets/img/${titulo.toLowerCase()}.png`;
   };
 
   if (!user) return <div>Carregando...</div>;
@@ -194,28 +189,24 @@ const Perfil = () => {
       style={{ width: 120, height: 120, borderRadius: "50%" }}
     />
   ) : (
-    <span style={{ fontSize: 42, color: "#fff", fontWeight: "bold" }}>
+    <span style={{ fontSize: 48, color: "#fff", fontWeight: "bold" }}>
       {user.name?.charAt(0)?.toUpperCase() || "?"}
     </span>
   );
 
   return (
     <div style={{
-      padding: "24px 16px 90px",
+      padding: "20px 16px 90px",
       maxWidth: 600,
       margin: "0 auto",
       fontFamily: "'Segoe UI', sans-serif",
       backgroundColor: "#fff",
     }}>
       <LogoFixa />
-      <header style={{ textAlign: "center", marginBottom: 24 }}>
-        <h2 style={{ color: "#0579b2", fontSize: 24 }}>Perfil</h2>
-      </header>
 
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 16 }}>
-        <div
-          onClick={handleAvatarClick}
-          style={{
+      <header style={{ textAlign: "center", marginBottom: 20 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <div onClick={handleAvatarClick} style={{
             width: 120,
             height: 120,
             borderRadius: "50%",
@@ -223,151 +214,141 @@ const Perfil = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: 42,
-            color: "#fff",
-            fontWeight: "bold",
-            cursor: "pointer",
             overflow: "hidden",
+            cursor: "pointer",
             boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          }}
-        >
-          {avatar}
-        </div>
+          }}>
+            {avatar}
+          </div>
 
-        <h2 style={{ marginTop: 12, marginBottom: 4, fontSize: 22 }}>{user.name}</h2>
-        <p style={{ margin: 0, color: "#666", fontSize: 16 }}>@{user.username}</p>
-
-        <div style={{ marginTop: 8, textAlign: "center", fontSize: 16, color: "#444" }}>
-          <strong>Bio:</strong>{" "}
-          {editingBio ? (
-            <>
-              <textarea
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
-                rows={3}
-                style={{
-                  width: "90%",
-                  borderRadius: 8,
-                  padding: 8,
-                  fontSize: 14,
-                  border: "1px solid #ccc",
-                  marginTop: 6,
-                }}
-              />
-              <FaSave
-                onClick={saveUserBio}
-                style={{
-                  marginLeft: 10,
-                  cursor: savingBio ? "not-allowed" : "pointer",
-                  color: savingBio ? "gray" : "green",
-                }}
-                title="Salvar Bio"
-              />
-            </>
-          ) : (
-            <>
-              <span>{bio || "Sem bio ainda."}</span>
-              <FaEdit
-                onClick={() => setEditingBio(true)}
-                style={{ marginLeft: 10, cursor: "pointer", color: "#0579b2" }}
-                title="Editar Bio"
-              />
-            </>
+          {showAvatarOptions && (
+            <div style={{
+              marginTop: 12,
+              backgroundColor: "#fff",
+              border: "1px solid #ccc",
+              borderRadius: 10,
+              padding: 10,
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 10,
+              maxWidth: 280,
+              justifyContent: "center",
+              boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
+            }}>
+              {recompensasObtidas.map((r) => (
+                <button key={r.titulo} onClick={() => handleAvatarSelect(r.titulo)} disabled={loadingAvatarId !== null}
+                  style={{
+                    width: 40,
+                    height: 40,
+                    padding: 0,
+                    background: "none",
+                    border: "none",
+                    borderRadius: "50%",
+                    overflow: "hidden",
+                    cursor: "pointer",
+                  }}>
+                  {loadingAvatarId === r.titulo ? (
+                    <div className="spinner" />
+                  ) : (
+                    <img src={normalizeIconUrl(r.iconUrl, r.titulo)} alt={r.titulo}
+                      style={{ width: 40, height: 40, objectFit: "contain" }} />
+                  )}
+                </button>
+              ))}
+            </div>
           )}
-        </div>
 
-        <div style={{
-          marginTop: 10,
-          backgroundColor: "#0579b2",
-          padding: "6px 14px",
-          borderRadius: 20,
-          color: "#fff",
-          fontSize: 16,
-          fontWeight: 500,
-        }}>
-          {user.pontos ?? 0} Bubbles 🫧
-        </div>
-      </div>
+          <h2 style={{ marginTop: 12, marginBottom: 4 }}>{user.name}</h2>
+          <p style={{ margin: 0, color: "#666" }}>@{user.username}</p>
 
-      <div style={{ padding: "0 8px" }}>
+          <div style={{ marginTop: 8, textAlign: "center", fontSize: 14, color: "#444" }}>
+            {editingBio ? (
+              <>
+                <textarea value={bio} onChange={(e) => setBio(e.target.value)}
+                  rows={2} style={{
+                    width: "90%", borderRadius: 8, padding: 6, fontSize: 14, border: "1px solid #ccc",
+                  }} />
+                <FaSave onClick={saveUserBio} style={{
+                  marginLeft: 8, cursor: savingBio ? "not-allowed" : "pointer", color: "green",
+                }} title="Salvar Bio" />
+              </>
+            ) : (
+              <>
+                <span>{bio || "Adicione sua bio"}</span>
+                <FaEdit onClick={() => setEditingBio(true)} style={{
+                  marginLeft: 8, cursor: "pointer", color: "#0579b2"
+                }} title="Editar Bio" />
+              </>
+            )}
+          </div>
+
+          <div style={{
+            marginTop: 10,
+            backgroundColor: "#0579b2",
+            padding: "4px 12px",
+            borderRadius: 20,
+            color: "#fff",
+            fontSize: 14,
+            fontWeight: 500,
+          }}>
+            {user.pontos ?? 0} Bubbles 🫧
+          </div>
+        </div>
+      </header>
+
+      <section style={{ padding: "0 8px" }}>
         <h3 style={{
-          color: "#0579b2",
-          textAlign: "center",
-          marginBottom: 16,
-          fontSize: 20,
-          fontWeight: 600,
+          textAlign: "center", fontSize: 18, color: "#0579b2", marginBottom: 12
         }}>Minhas Postagens</h3>
 
-        <div style={{ maxHeight: "45vh", overflowY: "auto", paddingRight: 6 }}>
+        <div style={{ maxHeight: "40vh", overflowY: "auto", paddingRight: 6 }}>
           {posts.length === 0 ? (
             <p style={{ textAlign: "center", color: "#666" }}>Você ainda não postou nada.</p>
-          ) : (
-            posts.map((post) => (
-              <div
-                key={post._id}
-                style={{
-                  border: "1px solid #e0e0e0",
-                  borderRadius: 12,
-                  padding: 12,
-                  marginBottom: 10,
-                  backgroundColor: "#f9fbff",
-                  boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
-                  position: "relative",
-                }}
-              >
-                <div style={{ fontSize: 14, color: "#555", marginBottom: 6 }}>
-                  {formatDateTime(post.createdAt)}
-                </div>
+          ) : posts.map((post) => (
+            <div key={post._id} style={{
+              border: "1px solid #e0e0e0",
+              borderRadius: 12,
+              padding: 12,
+              marginBottom: 10,
+              backgroundColor: "#f9fbff",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
+              position: "relative",
+            }}>
+              <div style={{ fontSize: 12, color: "#555", marginBottom: 4 }}>
+                {formatDateTime(post.createdAt)}
+              </div>
+              {editingPostId === post._id ? (
+                <textarea value={editingContent} onChange={(e) => setEditingContent(e.target.value)}
+                  rows={3} style={{
+                    width: "100%", borderRadius: 8, padding: 6, fontSize: 14, border: "1px solid #ccc",
+                  }} />
+              ) : (
+                <p style={{ whiteSpace: "pre-wrap", margin: 0 }}>{post.content}</p>
+              )}
 
+              <div style={{
+                position: "absolute", top: 10, right: 10, display: "flex", gap: 12, fontSize: 16,
+                color: "#0579b2", cursor: "pointer",
+              }}>
                 {editingPostId === post._id ? (
-                  <textarea
-                    value={editingContent}
-                    onChange={(e) => setEditingContent(e.target.value)}
-                    rows={3}
-                    style={{
-                      width: "100%",
-                      borderRadius: 8,
-                      padding: 6,
-                      fontSize: 14,
-                      border: "1px solid #ccc",
-                    }}
-                  />
+                  <>
+                    <FaSave onClick={saveEditing} title="Salvar" />
+                    <FaTimes onClick={cancelEditing} title="Cancelar" />
+                  </>
                 ) : (
-                  <p style={{ whiteSpace: "pre-wrap", margin: 0, fontSize: 16 }}>{post.content}</p>
-                )}
-
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 10,
-                    right: 10,
-                    display: "flex",
-                    gap: 12,
-                    fontSize: 16,
-                    color: "#0579b2",
-                    cursor: "pointer",
-                  }}
-                >
-                  {editingPostId === post._id ? (
-                    <>
-                      <FaSave onClick={saveEditing} title="Salvar" />
-                      <FaTimes onClick={cancelEditing} title="Cancelar" />
-                    </>
-                  ) : (
-                    <>
-                      <FaEdit onClick={() => startEditing(post)} title="Editar" />
-                      <FaTrash onClick={() => deletePost(post._id)} title="Excluir" />
-                    </>
-                  )}
-                </div>
-                {error && editingPostId === post._id && (
-                  <div style={{ color: "red", marginTop: 4 }}>{error}</div>
+                  <>
+                    <FaEdit onClick={() => startEditing(post)} title="Editar" />
+                    <FaTrash onClick={() => deletePost(post._id)} title="Excluir" />
+                  </>
                 )}
               </div>
-            ))
-          )}
+              {error && editingPostId === post._id && (
+                <div style={{ color: "red", marginTop: 4 }}>{error}</div>
+              )}
+            </div>
+          ))}
         </div>
-      </div>
+      </section>
 
       <LogoutButton />
       <BottomNavigation />
