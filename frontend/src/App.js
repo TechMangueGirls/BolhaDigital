@@ -1,3 +1,4 @@
+// src/App.js
 import { Container, Row, Col } from "react-bootstrap";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
@@ -14,12 +15,13 @@ import Perfil from "./components/Perfil";
 import Welcome from "./components/Welcome";
 import MissoesDiarias from "./components/MissoesDiarias";
 import Recompensas from "./components/Recompensas";
+import SobreNos from "./components/SobreNos";
 
 import MissaoDia from "./missoes/MissaoDia";
 import MissaoArte from "./missoes/MissaoArte";
 import MissaoMusica from "./missoes/MissaoMusica";
 import MissaoFilme from "./missoes/MissaoFilme";
-import ValidarMissoes from "./components/ValidarMissoes"; 
+import ValidarMissoes from "./components/ValidarMissoes";
 
 function App() {
   return (
@@ -28,10 +30,13 @@ function App() {
         <Row>
           <Col>
             <Routes>
+              {/* Públicas */}
               <Route path="/" element={<Welcome />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/sobrenos" element={<SobreNos />} />
 
+              {/* Protegidas */}
               <Route
                 path="/home"
                 element={
@@ -112,9 +117,8 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              
               <Route
-                path="/validar-missoes" 
+                path="/validar-missoes"
                 element={
                   <ProtectedRoute>
                     <ValidarMissoes />

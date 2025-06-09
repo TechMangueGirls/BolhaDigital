@@ -169,17 +169,23 @@ const Signup = () => {
         style={{ color: "white", fontSize: "0.9rem" }}
       >
         © {new Date().getFullYear()} Bolha Digital. Todos os direitos reservados.
-        <p>
-          Criado por{" "}
-          <a
-            href="https://github.com/luanabernardo/Bolha-Digital"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: "white", textDecoration: "underline" }}
-          >
-            TechMangueGirls
-          </a>
-        </p>
+<p>
+  Criado por{" "}
+  <button
+    onClick={() => navigate("/sobrenos")}
+    style={{
+      background: "none",
+      border: "none",
+      color: "white",
+      textDecoration: "underline",
+      cursor: "pointer",
+      padding: 0,
+      font: "inherit",
+    }}
+  >
+    TechMangueGirls
+  </button>
+</p>
       </footer>
     </>
   );
