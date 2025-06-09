@@ -120,7 +120,7 @@ const Recompensas = () => {
     wrapper: {
       backgroundColor: "#fff",
       minHeight: "100vh",
-      paddingTop: isMobile ? "200px" : "380px", 
+      paddingTop: isMobile ? "200px" : "380px",
       paddingBottom: isMobile ? "80px" : "50px",
       boxSizing: "border-box",
       display: "flex",
@@ -130,8 +130,8 @@ const Recompensas = () => {
       overflowY: "auto",
     },
     container: {
-      width: "100%",
-      maxWidth: "600px",
+      width: "100%",       // respeitar o container pai que será 400px
+      maxWidth: "400px",   // limitar para caber no container pai
       padding: "0 10px",
       display: "flex",
       flexDirection: "column",
