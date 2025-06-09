@@ -12,8 +12,10 @@ const MissaoArte = () => {
   const [statusMsg, setStatusMsg] = useState("");
   const [enviando, setEnviando] = useState(false);
 
+  // Agora guardamos os arquivos reais, não base64
   const handleFileChange = (e) => {
-    setImagens(Array.from(e.target.files));
+    const files = Array.from(e.target.files);
+    setImagens(files);
   };
 
   const handleSubmit = async (e) => {
@@ -32,17 +34,19 @@ const MissaoArte = () => {
     setEnviando(true);
     setStatusMsg("");
 
-    const formData = new FormData();
-    formData.append("titulo", titulo);
-    imagens.forEach((imagem) => {
-      formData.append("imagens", imagem);
-    });
-
     try {
+      const formData = new FormData();
+      formData.append("titulo", titulo);
+
+      imagens.forEach((file) => {
+        formData.append("imagens", file); // nome do campo deve bater com multer no backend
+      });
+
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/missoes/enviar`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
+          // NÃO colocar Content-Type, o browser faz isso automaticamente
         },
         body: formData,
         credentials: "include",
@@ -53,6 +57,8 @@ const MissaoArte = () => {
       if (response.ok) {
         setStatusMsg("Missão enviada com sucesso! Aguarde aprovação do admin.");
         setImagens([]);
+        // limpa input do arquivo (opcional)
+        document.getElementById("fileInput").value = "";
       } else {
         setStatusMsg(data.mensagem || "Erro ao enviar missão.");
       }
@@ -86,7 +92,7 @@ const MissaoArte = () => {
           <p>📌 O que deve conter no print (ou nos prints)?</p>
           <ul style={{ paddingLeft: 20, fontSize: 14 }}>
             <li>O elogio feito</li>
-            <li> E o perfil do artista </li>
+            <li>O perfil do artista</li>
           </ul>
         </div>
       </div>
@@ -96,7 +102,14 @@ const MissaoArte = () => {
           <label htmlFor="fileInput" style={{ display: "block", color: "#0579b2", fontWeight: "bold", fontSize: 14, marginBottom: 8 }}>
             Selecione as imagens da missão:
           </label>
-          <input id="fileInput" type="file" accept="image/*" multiple onChange={handleFileChange} style={{ display: "none" }} />
+          <input
+            id="fileInput"
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleFileChange}
+            style={{ display: "none" }}
+          />
           <button
             type="button"
             onClick={() => document.getElementById("fileInput").click()}

@@ -34,9 +34,7 @@ const MissaoFilme = () => {
 
     const formData = new FormData();
     formData.append("titulo", titulo);
-    imagens.forEach((imagem) => {
-      formData.append("imagens", imagem);
-    });
+    imagens.forEach((imagem) => formData.append("imagens", imagem));
 
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/missoes/enviar`, {
@@ -67,7 +65,7 @@ const MissaoFilme = () => {
   const titleStyle = {
     color: "#0579b2",
     textAlign: "center",
-    marginBottom: "10px",
+    marginBottom: 10,
     fontSize: "1.8rem",
     wordWrap: "break-word",
   };
@@ -83,10 +81,10 @@ const MissaoFilme = () => {
           Indique nas redes sociais um filme que faz você se sentir bem. Escreva o nome, explique brevemente o motivo e poste com carinho.
           Depois, envie um print da publicação aqui para validar sua missão.
         </p>
-        <div style={{ textAlign: "left", backgroundColor: "#ffffff", color: "#0579b2", borderRadius: 12, padding: 12, marginTop: 16 }}>
+        <div style={{ textAlign: "left", backgroundColor: "#fff", color: "#0579b2", borderRadius: 12, padding: 12, marginTop: 16 }}>
           <p>📌 O que deve conter no print (ou nos prints)?</p>
           <ul style={{ paddingLeft: 20, fontSize: 14 }}>
-            <li> Capa ou trecho mas contendo o nome do filme </li>
+            <li>Capa ou trecho mas contendo o nome do filme</li>
           </ul>
         </div>
       </div>
@@ -96,7 +94,14 @@ const MissaoFilme = () => {
           <label htmlFor="fileInput" style={{ display: "block", color: "#0579b2", fontWeight: "bold", fontSize: 14, marginBottom: 8 }}>
             Selecione as imagens da missão:
           </label>
-          <input id="fileInput" type="file" accept="image/*" multiple onChange={handleFileChange} style={{ display: "none" }} />
+          <input
+            id="fileInput"
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleFileChange}
+            style={{ display: "none" }}
+          />
           <button
             type="button"
             onClick={() => document.getElementById("fileInput").click()}
