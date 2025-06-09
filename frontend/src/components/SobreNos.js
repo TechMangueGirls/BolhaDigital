@@ -171,7 +171,7 @@ const SobreNos = () => {
       <section style={styles.section}>
         <h2 style={styles.sectionHeading}>Nossa Missão</h2>
         <p style={styles.sectionContent}>
-         Criamos espaços digitais baseados em respeito e empatia, promovendo bem-estar, impacto social e uso responsável da tecnologia.
+         Criar espaços digitais baseados em respeito e empatia, promovendo bem-estar, impacto social e uso responsável da tecnologia.
         </p>
       </section>
 
