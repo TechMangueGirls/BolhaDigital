@@ -1,6 +1,6 @@
 const express = require("express");
 const multer = require("multer");
-const upload = require("../middlewares/upload"); // seu middleware multer configurado
+const upload = require("../middlewares/upload");
 const checkToken = require("../middlewares/checkToken");
 const checkAdmin = require("../middlewares/checkAdmin");
 const MissaoEnviada = require("../models/MissaoEnviada");
@@ -13,7 +13,6 @@ router.post(
   "/enviar",
   checkToken,
   (req, res, next) => {
-    // Middleware multer para upload das imagens
     upload.array("imagens", 4)(req, res, (err) => {
       if (err instanceof multer.MulterError) {
         if (err.code === "LIMIT_FILE_SIZE") {
@@ -31,24 +30,31 @@ router.post(
       const { titulo } = req.body;
       const usuarioId = req.userId;
 
+      // Logs para ajudar no debug
+      console.log("usuarioId:", usuarioId);
+      console.log("titulo:", titulo);
+      console.log("req.files:", req.files);
+
       if (!usuarioId || !titulo || !req.files || req.files.length === 0) {
         return res.status(400).json({ mensagem: "Todos os campos são obrigatórios." });
       }
 
-      // Pega os nomes dos arquivos enviados
-      const imagens = req.files.map((file) => file.filename);
+      const imagens = req.files.map((file) => ({
+        mimetype: file.mimetype,
+        buffer: file.buffer
+      }));
 
       const novaMissao = new MissaoEnviada({
         usuario: usuarioId,
         titulo,
-        imagens,
+        imagens
       });
 
       await novaMissao.save();
 
       res.status(201).json({
         mensagem: "Missão enviada com sucesso.",
-        dados: { usuarioId, titulo, imagens },
+        dados: { usuarioId, titulo, imagensEnviadas: imagens.length },
       });
     } catch (erro) {
       console.error("Erro ao enviar missão:", erro.message);
@@ -65,7 +71,17 @@ router.get(
   async (req, res) => {
     try {
       const missoesPendentes = await MissaoEnviada.find({ status: "pendente" }).populate("usuario", "name username");
-      res.json(missoesPendentes);
+
+      // Converte imagens em base64 para o admin visualizar
+      const resultado = missoesPendentes.map(missao => ({
+        ...missao.toObject(),
+        imagens: missao.imagens.map(img => ({
+          mimetype: img.mimetype,
+          base64: `data:${img.mimetype};base64,${img.buffer.toString("base64")}`
+        }))
+      }));
+
+      res.json(resultado);
     } catch (e) {
       console.error(e);
       res.status(500).json({ mensagem: "Erro ao buscar missões pendentes." });
@@ -81,7 +97,7 @@ router.put(
   async (req, res) => {
     try {
       const { id } = req.params;
-      const { status } = req.body; // Espera "aprovada" ou "rejeitada"
+      const { status } = req.body;
 
       if (!["aprovada", "rejeitada"].includes(status)) {
         return res.status(400).json({ mensagem: "Status inválido." });

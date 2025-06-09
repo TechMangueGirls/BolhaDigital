@@ -41,7 +41,12 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(express.json());
+
+// Aplica express.json() apenas se o conteúdo não for multipart/form-data, com limite aumentado
+app.use((req, res, next) => {
+  if (req.is('multipart/form-data')) return next();
+  express.json({ limit: "50mb" })(req, res, next);
+});
 
 // Serve arquivos enviados em /uploads
 app.use('/uploads', express.static(uploadDir));
