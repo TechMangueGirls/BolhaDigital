@@ -21,15 +21,16 @@ if (!fs.existsSync(uploadDir)) {
   console.log('Pasta uploads/ já existe.');
 }
 
-// Domínios permitidos
+// Domínios permitidos para CORS
 const allowedOrigins = [
-  'https://bolha-digital1.onrender.com', 
-  'http://localhost:3000',               
+  'https://bolha-digital1.onrender.com',
+  'http://localhost:3000',
 ];
 
 // Configurações CORS
 const corsOptions = {
   origin: function (origin, callback) {
+    // Permite requests sem origem (como postman, curl) ou da lista permitida
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -45,18 +46,18 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Pasta para arquivos enviados (estática)
+// Expor pasta uploads como estática para servir arquivos enviados
 app.use('/uploads', express.static(uploadDir));
 
-// Conexão com o banco
+// Conexão com o banco de dados MongoDB
 connectDB();
 
-// Rotas
+// Rotas da aplicação
 app.use(authRoutes);
 app.use(postRoutes);
 app.use('/api/missoes', missaoRoutes);
 app.use('/api/recompensas', recompensasRoutes);
 
-// Inicialização do servidor
+// Inicialização do servidor na porta definida no .env ou 5000
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));

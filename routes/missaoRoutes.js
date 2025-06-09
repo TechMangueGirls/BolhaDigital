@@ -1,6 +1,6 @@
 const express = require("express");
 const multer = require("multer");
-const upload = require("../middlewares/upload");
+const upload = require("../middlewares/upload"); // seu middleware multer configurado
 const checkToken = require("../middlewares/checkToken");
 const checkAdmin = require("../middlewares/checkAdmin");
 const MissaoEnviada = require("../models/MissaoEnviada");
@@ -13,6 +13,7 @@ router.post(
   "/enviar",
   checkToken,
   (req, res, next) => {
+    // Middleware multer para upload das imagens
     upload.array("imagens", 4)(req, res, (err) => {
       if (err instanceof multer.MulterError) {
         if (err.code === "LIMIT_FILE_SIZE") {
@@ -34,6 +35,7 @@ router.post(
         return res.status(400).json({ mensagem: "Todos os campos são obrigatórios." });
       }
 
+      // Pega os nomes dos arquivos enviados
       const imagens = req.files.map((file) => file.filename);
 
       const novaMissao = new MissaoEnviada({
@@ -106,4 +108,3 @@ router.put(
 );
 
 module.exports = router;
-
