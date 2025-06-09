@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
     titulo: { type: String },
     iconUrl: { type: String },
   },
+
+  votacoesRespondidas: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'Votacao' }
+  ],
 });
 
 module.exports = mongoose.model('User', userSchema);
