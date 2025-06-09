@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const connectDB = require('./config/db');
 
 const authRoutes = require('./routes/authRoutes');
@@ -10,6 +11,15 @@ const missaoRoutes = require('./routes/missaoRoutes');
 const recompensasRoutes = require('./routes/recompensasRoutes');
 
 const app = express();
+
+// *** Garantir que a pasta uploads existe ***
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+  console.log('Pasta uploads/ criada.');
+} else {
+  console.log('Pasta uploads/ já existe.');
+}
 
 // Domínios permitidos
 const allowedOrigins = [
@@ -35,8 +45,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Pasta para arquivos enviados
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Pasta para arquivos enviados (estática)
+app.use('/uploads', express.static(uploadDir));
 
 // Conexão com o banco
 connectDB();
@@ -50,6 +60,3 @@ app.use('/api/recompensas', recompensasRoutes);
 // Inicialização do servidor
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
-
-
-
