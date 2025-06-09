@@ -128,9 +128,13 @@ const Welcome = () => {
           padding: 15px 0;
           user-select: none;
         }
-        footer a {
+        footer button {
+          background: none;
+          border: none;
           color: #0579b2;
           text-decoration: underline;
+          font-size: 0.9rem;
+          cursor: pointer;
         }
         @media (max-width: 768px) {
           .welcome-container {
@@ -184,13 +188,9 @@ const Welcome = () => {
           © {new Date().getFullYear()} Bolha Digital. Todos os direitos reservados.
           <p>
             Criado por{" "}
-            <a
-              href="https://github.com/luanabernardo/Bolha-Digital"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <button onClick={() => navigate("/sobrenos")}>
               TechMangueGirls
-            </a>
+            </button>
           </p>
         </footer>
       </div>
