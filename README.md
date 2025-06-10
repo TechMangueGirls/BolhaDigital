@@ -1,4 +1,5 @@
 *A Bolha Digital*
+
 **Visão Geral do Projeto**
 A Bolha Digital é uma rede social inovadora, criada com o propósito de transformar o ambiente online. Nosso projeto nasceu da necessidade urgente de combater a crescente toxicidade e o cyberbullying que assolam as plataformas digitais, especialmente afetando os jovens. Acreditamos que a internet pode e deve ser um espaço de conexão positiva, respeito e apoio mútuo.
 
