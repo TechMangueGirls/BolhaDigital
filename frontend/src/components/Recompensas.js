@@ -7,14 +7,16 @@ import bolha from "../assets/img/bolha.png";
 import gamer from "../assets/img/gamer.png";
 import reino from "../assets/img/reino.png";
 import artista from "../assets/img/artista.png";
+import video from "../assets/img/video.png";
+import camera from "../assets/img/camera.png";
 
 const todasRecompensas = [
   { titulo: "Bolha", pontos: 150, iconUrl: bolha },
   { titulo: "Gamer", pontos: 700, iconUrl: gamer },
   { titulo: "Reino", pontos: 1000, iconUrl: reino },
   { titulo: "Artista", pontos: 800, iconUrl: artista },
-  { titulo: "Postagem de Vídeo", pontos: 20000, iconUrl: null, icon: "🎬" },
-  { titulo: "Postagem de Imagens", pontos: 10000, iconUrl: null, icon: "📸" },
+  { titulo: "Postagem de Vídeo", pontos: 20000, iconUrl: video },
+  { titulo: "Postagem de Imagens", pontos: 10000, iconUrl: camera },
 ];
 
 const recompensasPadrao = [
