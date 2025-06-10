@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import BottomNavigation from "./BottomNavigation";
-import LogoFixa from "./LogoFixa";
 import { useUserAuth } from "../context/UserAuthContext";
 import { FaPlus } from "react-icons/fa";
 
@@ -8,14 +7,16 @@ import bolha from "../assets/img/bolha.png";
 import gamer from "../assets/img/gamer.png";
 import reino from "../assets/img/reino.png";
 import artista from "../assets/img/artista.png";
+import video from "../assets/img/video.png";
+import camera from "../assets/img/camera.png";
 
 const todasRecompensas = [
   { titulo: "Bolha", pontos: 150, iconUrl: bolha },
   { titulo: "Gamer", pontos: 700, iconUrl: gamer },
   { titulo: "Reino", pontos: 1000, iconUrl: reino },
   { titulo: "Artista", pontos: 800, iconUrl: artista },
-  { titulo: "Postagem de Vídeo", pontos: 20000, iconUrl: null, icon: "🎬" },
-  { titulo: "Postagem de Imagens", pontos: 10000, iconUrl: null, icon: "📸" },
+  { titulo: "Postagem de Vídeo", pontos: 20000, iconUrl: video },
+  { titulo: "Postagem de Imagens", pontos: 10000, iconUrl: camera },
 ];
 
 const recompensasPadrao = [
@@ -25,6 +26,8 @@ const recompensasPadrao = [
   },
   { titulo: "Postagem", iconUrl: null, icon: "📝" },
 ];
+
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
 const Recompensas = () => {
   const { user, setUser } = useUserAuth();
@@ -41,24 +44,24 @@ const Recompensas = () => {
       if (!user?._id) return;
 
       try {
-        const res = await fetch(`http://localhost:5000/api/recompensas/${user._id}`);
+        const res = await fetch(`${API_BASE_URL}/api/recompensas/${user._id}`);
         const data = await res.json();
 
         if (res.ok) {
-          const recompensasObtidasComIcones = data.obtidas.map(r => {
-            const recompensaLocal = todasRecompensas.find(tr => tr.titulo === r.titulo);
+          const recompensasObtidasComIcones = data.obtidas.map((r) => {
+            const recompensaLocal = todasRecompensas.find((tr) => tr.titulo === r.titulo);
             return {
               ...r,
-              iconUrl: recompensaLocal?.iconUrl || null,
+              iconUrl: recompensaLocal?.iconUrl || r.iconUrl || null,
               icon: recompensaLocal?.icon || r.icon || null,
             };
           });
 
-          const recompensasParaResgatar = data.paraResgatar.map(r => {
-            const recompensaLocal = todasRecompensas.find(tr => tr.titulo === r.titulo);
+          const recompensasParaResgatar = data.paraResgatar.map((r) => {
+            const recompensaLocal = todasRecompensas.find((tr) => tr.titulo === r.titulo);
             return {
               ...r,
-              iconUrl: recompensaLocal?.iconUrl || null,
+              iconUrl: recompensaLocal?.iconUrl || r.iconUrl || null,
               icon: recompensaLocal?.icon || r.icon || null,
             };
           });
@@ -92,14 +95,11 @@ const Recompensas = () => {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/recompensas/obter/${user._id}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ titulo: recompensa.titulo }),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/api/recompensas/obter/${user._id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ titulo: recompensa.titulo }),
+      });
 
       const data = await response.json();
 
@@ -120,18 +120,21 @@ const Recompensas = () => {
     wrapper: {
       backgroundColor: "#fff",
       minHeight: "100vh",
-      paddingTop: isMobile ? "200px" : "380px",
-      paddingBottom: isMobile ? "80px" : "50px",
+      paddingTop: isMobile ? "120px" : "120px",
+      paddingBottom: isMobile ? "100px" : "70px",
       boxSizing: "border-box",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       width: "100%",
       overflowY: "auto",
+      maxHeight: "100vh",
+      scrollbarWidth: "none",
+      msOverflowStyle: "none",
     },
     container: {
-      width: "100%",       // respeitar o container pai que será 400px
-      maxWidth: "400px",   // limitar para caber no container pai
+      width: "100%",
+      maxWidth: "400px",
       padding: "0 10px",
       display: "flex",
       flexDirection: "column",
@@ -177,7 +180,7 @@ const Recompensas = () => {
     grid: {
       display: "grid",
       gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-      gap: "10px",
+      gap: "12px",
     },
     card: {
       border: "2px solid #00AEEF",
@@ -194,6 +197,7 @@ const Recompensas = () => {
       userSelect: "none",
       transition: "transform 0.2s",
       fontSize: isMobile ? "14px" : "16px",
+      minHeight: "160", 
     },
     cardHover: {
       transform: "scale(1.07)",
@@ -202,6 +206,7 @@ const Recompensas = () => {
       backgroundColor: "#007aaf",
       color: "white",
       border: "none",
+      cursor: "default",
     },
     icon: {
       width: "50px",
@@ -230,7 +235,6 @@ const Recompensas = () => {
 
   return (
     <>
-      <LogoFixa />
       <div style={styles.wrapper}>
         <div style={styles.container}>
           <div style={styles.saldoCard}>
@@ -249,7 +253,6 @@ const Recompensas = () => {
                   ...styles.card,
                   ...styles.cardObtida,
                   ...(hoveredIndex === index ? styles.cardHover : {}),
-                  cursor: "default",
                 }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
@@ -261,9 +264,7 @@ const Recompensas = () => {
                     style={styles.icon}
                   />
                 ) : (
-                  <div style={styles.iconText}>
-                    {recompensa.icon || "🏆"}
-                  </div>
+                  <div style={styles.iconText}>{recompensa.icon || "🏆"}</div>
                 )}
                 <div>{recompensa.titulo}</div>
               </div>
@@ -291,16 +292,11 @@ const Recompensas = () => {
                     style={styles.icon}
                   />
                 ) : (
-                  <div style={styles.iconText}>
-                    {recompensa.icon || "🎁"}
-                  </div>
+                  <div style={styles.iconText}>{recompensa.icon || "🎁"}</div>
                 )}
                 <div>{recompensa.titulo}</div>
                 <div style={styles.pontos}>{recompensa.pontos} Bubbles</div>
-                <button
-                  style={styles.button}
-                  onClick={() => handleResgatar(index)}
-                >
+                <button style={styles.button} onClick={() => handleResgatar(index)}>
                   Resgatar
                 </button>
               </div>
