@@ -8,7 +8,7 @@ const todasRecompensas = [
   { titulo: "Reino", pontos: 1000, iconUrl: "/assets/img/reino.png" },
   { titulo: "Artista", pontos: 800, iconUrl: "/assets/img/artista.png" },
   { titulo: "Postagem de Vídeo", pontos: 20000, iconUrl: "/assets/img/video.png" },
-  { titulo: "Postagem de Imagens", pontos: 10000, iconUrl: "/assets/img/imagens.png" },
+  { titulo: "Postagem de Imagens", pontos: 10000, iconUrl: "/assets/img/camera.png" },
 ];
 
 router.post('/obter/:userId', async (req, res) => {
