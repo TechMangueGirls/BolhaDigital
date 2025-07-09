@@ -1,44 +1,93 @@
-*A Bolha Digital*
+# **Bolha Digital**🫧
 
-**Visão Geral do Projeto**
-A Bolha Digital é uma rede social inovadora, criada com o propósito de transformar o ambiente online. Nosso projeto nasceu da necessidade urgente de combater a crescente toxicidade e o cyberbullying que assolam as plataformas digitais, especialmente afetando os jovens. Acreditamos que a internet pode e deve ser um espaço de conexão positiva, respeito e apoio mútuo.
+> *Uma rede social que transforma a internet em um espaço de empatia, respeito e segurança digital.*
 
-**O Problema que Abordamos**
-O cyberbullying é uma forma de violência digital que se propaga rapidamente por redes sociais, aplicativos de mensagens e plataformas de jogos. Caracterizado por comportamentos repetitivos e intencionais de assustar, irritar ou humilhar, ele causa danos psicológicos profundos como ansiedade, depressão e isolamento. Conforme evidenciado por estudos, como o artigo "A responsabilidade civil decorrente da prática do bullying e do cyberbullying no ambiente escolar" (resumido por Luana Bernardo), o Brasil enfrenta um cenário alarmante, com medidas atuais insuficientes para conter a proliferação desses atos. A ausência de leis específicas, notada em 2021, agrava a sensação de impunidade, e a facilidade de propagação do ódio online faz com que os jovens sejam os principais alvos dessa violência crescente.
+## Links Importantes📌 
 
-**Nossa Solução**
-A Bolha Digital é a nossa resposta a essa epidemia. Desenvolvemos uma plataforma que foca em incentivar boas práticas para promover um ambiente mais seguro e com menos toxicidade, beneficiando tanto vítimas quanto agressores ao incentivá-los a repensar suas ações.
+* 🎥 **Vídeo Pitch:** [Assista aqui](https://youtu.be/qhnsUwyxJrk?si=H3WjpKIOTMDBNkUV)
+* 🌐 **Projeto no Ar (Deploy):** [Acesse a plataforma](https://bolha-digital1.onrender.com/)
+* 📚 **Wiki e Documentação Técnica:** [Veja aqui](https://github.com/luanabernardo/Bolha-Digital/wiki)
 
-**Como Funciona**
-A Bolha Digital é uma rede social onde os usuários podem:
+---
 
-- Fazer postagens: Compartilhar conteúdos em um ambiente seguro.
-- Segurança Ativa: Nosso sistema de inteligência artificial bloqueia automaticamente a postagem de conteúdos ofensivos, de ódio ou cyberbullying, garantindo um ambiente positivo.
-- Missões Interativas: Participar de missões que incentivam a positividade, como "fazer comentários positivos para colegas, artistas ou desconhecidos", "indicar filmes e músicas" ou "escrever textos motivadores".
-- Bubbles e Recompensas: Completar missões rende Bubbles, nossa moeda virtual acumulativa. Bubbles podem ser trocados por recompensas exclusivas como avatares e temas. Além disso, eles desbloqueiam a possibilidade de postar vídeos e fotos (inicialmente, apenas textos são permitidos).
-- Votação em Comentários: A comunidade pode votar em comentários, destacando interações positivas e reforçando o ciclo do bem.
+## Sobre o Projeto💡
 
-**Nosso Diferencial**
-Nosso principal diferencial é a interatividade direcionada através de missões engajadoras que incentivam ativamente a criação de um ambiente positivo. Priorizamos a segurança do usuário por meio de medidas preventivas robustas contra o cyberbullying, incluindo o bloqueio automático de conteúdo ofensivo, o que nos permite assegurar um espaço digital livre de toxicidade.
+A **Bolha Digital** é uma rede social desenvolvida com o objetivo de **combater o cyberbullying** e criar uma comunidade online **segura, positiva e acolhedora**, especialmente para jovens. A plataforma combina **tecnologia, gamificação e empatia** para incentivar interações saudáveis e combater a toxicidade nas redes.
 
-**Missão, Visão e Valores**
-***Missão***
-Criar e manter um ambiente digital seguro e acolhedor, onde a conexão positiva e o incentivo ao bem sejam a base de todas as interações. Nosso objetivo é capacitar os usuários a promoverem a gentileza e a combaterem a toxicidade online através de engajamento interativo e recompensador.
+---
 
-***Visão***
-Ser a rede social líder em segurança e bem-estar digital, reconhecida por sua capacidade de transformar a internet em um espaço vibrante de respeito, empatia e crescimento pessoal, onde o ódio não tem lugar e a positividade floresce em cada interação.
+## O Problema🚨
 
-***Valores***
-- Segurança: Priorizamos um ambiente livre de assédio, discriminação e cyberbullying, com medidas preventivas ativas.
-- Positividade: Incentivamos e recompensamos atitudes e conteúdos que promovam o bem, a gentileza e a inspiração.
-- Interatividade: Fomentamos o engajamento ativo dos usuários através de missões e um sistema de valorização das boas práticas.
-- Comunidade: Acreditamos no poder da colaboração e do apoio mútuo para construir um espaço digital mais humano e conectado.
-- Evolução: Buscamos constantemente inovar e adaptar-nos para oferecer a melhor experiência, capacitando os usuários a desenvolverem seu potencial positivo online.
+O **cyberbullying** é uma forma de violência digital que se espalha rapidamente por redes sociais, jogos e aplicativos de mensagens. Com consequências graves como depressão, ansiedade e isolamento social, o problema afeta principalmente os jovens e encontra respaldo em um cenário de impunidade e leis ineficazes.
 
-- 
-Seja você a diferença. Junte-se à Bolha Digital e comece a espalhar o bem em pequenas ações.
+---
 
+## Nossa Solução🛠️ 
 
+A Bolha Digital oferece um conjunto de funcionalidades projetadas para transformar a experiência online:
 
+* **Segurança Ativa:** Bloqueia conteúdos ofensivos antes da publicação.
+* **Missões Interativas:** Ações gamificadas que incentivam comportamentos positivos como elogios e indicações culturais.
+* **Sistema de Recompensas (Bubbles):** Os usuários ganham *Bubbles* por boas ações e trocam por avatares, temas e liberação de novas funções (como postar fotos e vídeos).
+* **Votação:** A comunidade valoriza boas interações com votos, fortalecendo o ciclo do bem e da informação.
 
+---
+
+## Diferenciais🌟 
+
+* Prevenção ativa contra discurso de ódio
+* Recompensas por gentileza e empatia
+* Engajamento guiado por missões com propósito
+* Crescimento pessoal aliado à tecnologia
+
+---
+
+## Missão, Visão e Valores🎯
+
+### Missão
+
+Criar um ambiente digital acolhedor onde o respeito e a gentileza sejam incentivados por meio de tecnologia e recompensas.
+
+### Visão
+
+Ser referência em bem-estar digital, transformando a internet em um espaço mais humano, seguro e inspirador.
+
+### Valores
+
+* **Segurança Digital**
+* **Empatia**
+* **Interatividade com Propósito**
+* **Recompensa por Boas Práticas**
+* **Inovação Contínua**
+
+---
+
+## Equipe Fundadora👩‍💻 
+
+* **Ana Mendes** – *Frontend & Performance*
+  🔗 [LinkedIn](https://www.linkedin.com/in/anacarlamendess/) | 💻 [GitHub](https://github.com/Anacarlamends)
+
+* **Luana Bernardo** – *Gerente de Projeto & UX/UI*
+  🔗 [LinkedIn](https://www.linkedin.com/in/luana-bernardo-155623241/) | 💻 [GitHub](https://github.com/luanabernardo)
+
+* **Gabriely Xavier** – *Backend & DBA*
+  🔗 [LinkedIn](https://www.linkedin.com/in/gabriely-xavier/) | 💻 [GitHub](https://github.com/GabyXavierr)
+
+---
+
+## Tecnologias Utilizadas📦
+
+* **Frontend:** React.js
+* **Backend:** Node.js, Express.js
+* **Banco de Dados:** MongoDB
+* **Controle de Versão:** Git e GitHub
+
+---
+
+## Licença📢 
+
+Este projeto está licenciado sob a *MIT License*
+
+---
+**Seja você a diferença. Junte-se à Bolha Digital e comece a espalhar o bem em pequenas ações.**
 
